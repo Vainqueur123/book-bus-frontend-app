@@ -3,16 +3,33 @@ import { supabase } from './supabase';
 // Fetch all active buses
 export const getActiveBuses = async () => {
   try {
-    console.log('Fetching all active buses...');
-    const { data, error } = await supabase
+    console.log('🔍 [API] Fetching all active buses from Supabase...');
+    
+    // Log Supabase client initialization
+    console.log('[API] Supabase client initialized:', !!supabase);
+    
+    // Make the API call
+    const { data, error, status } = await supabase
       .from('Activebuses')
       .select('*');
 
-    if (error) throw error;
-    console.log('Active buses data:', data);
-    return data;
+    console.log(`[API] Supabase response - Status: ${status}`);
+    
+    if (error) {
+      console.error('❌ [API] Error fetching active buses:', error);
+      throw error;
+    }
+    
+    console.log(`✅ [API] Successfully fetched ${data?.length || 0} active buses`);
+    console.log('[API] Sample bus data:', data?.[0] || 'No data');
+    
+    return data || [];
   } catch (error) {
-    console.error('Error fetching active buses:', error.message);
+    console.error('❌ [API] Unhandled error in getActiveBuses:', {
+      message: error.message,
+      name: error.name,
+      stack: error.stack
+    });
     throw error;
   }
 };

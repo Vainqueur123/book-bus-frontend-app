@@ -1,0 +1,942 @@
+/* Base Styles & Variables */
+:root {
+  --primary: #3498db;
+  --primary-dark: #2980b9;
+  --secondary: #2ecc71;
+  --secondary-dark: #27ae60;
+  --text: #2c3e50;
+  --text-light: #7f8c8d;
+  --border: #ecf0f1;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
+  --radius: 10px;
+  --transition: all 0.3s ease;
+}
+
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  background-color: #f8fafc;
+}
+
+/* Layout */
+.booking-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.booking-title {
+  color: var(--text);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.booking-subtitle {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+/* Bus List */
+.bus-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+/* Bus Card */
+.bus-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bus-card.expanded {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Simplified Card View */
+.bus-card-summary {
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.bus-card-summary:hover {
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+.bus-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+.bus-company {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.bus-company .icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+  background: rgba(52, 152, 219, 0.1);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.bus-company h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text);
+}
+
+.bus-time {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.departure-time,
+.arrival-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.departure-time .time,
+.arrival-time .time {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.departure-time .date,
+.arrival-time .date {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+.arrow-icon {
+  color: var(--primary);
+  margin: 0 1rem;
+}
+
+.view-details-btn {
+  color: var(--primary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding: 0.75rem;
+  border-top: 1px dashed var(--border);
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.view-details-btn:hover {
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+.bus-card-summary:hover .view-details-btn {
+  color: var(--primary-dark);
+}
+
+/* Expanded Details Section */
+.bus-card-details {
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid var(--border);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Header */
+.bus-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+.bus-company {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bus-company .icon {
+  font-size: 1.75rem;
+  color: var(--primary);
+  background: rgba(52, 152, 219, 0.1);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.bus-company h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.25rem 0;
+}
+
+.bus-type {
+  display: inline-block;
+  background: rgba(46, 204, 113, 0.1);
+  color: var(--secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+/* Price Tag */
+.price-tag {
+  text-align: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.price-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+/* Route Container */
+.route-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 1.5rem 0;
+  border-top: 1px dashed var(--border);
+  border-bottom: 1px dashed var(--border);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.route-info {
+  flex: 1;
+}
+
+.route-time {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.route-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.location-icon {
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.route-separator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-light);
+  padding: 0 1rem;
+}
+
+.arrow-icon {
+  font-size: 1.25rem;
+  color: var(--primary);
+  margin: 0.25rem 0;
+}
+
+.duration {
+  font-size: 0.8rem;
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* Bus Details Grid */
+.bus-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.detail-icon {
+  font-size: 1.25rem;
+  color: var(--primary);
+  background: rgba(52, 152, 219, 0.1);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.15rem;
+}
+
+.detail-value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.scheduled {
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--primary);
+}
+
+.status-badge.ontime {
+  background: rgba(46, 204, 113, 0.1);
+  color: var(--secondary);
+}
+
+.status-badge.delayed {
+  background: rgba(241, 196, 15, 0.1);
+  color: #f39c12;
+}
+
+.status-badge.cancelled {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+/* Bus Actions */
+.bus-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  flex: 1;
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.35);
+  background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.btn-outline:hover {
+  background: rgba(52, 152, 219, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error State */
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.error-message p {
+  color: #e74c3c;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* Bus Details Form */
+.bus-details-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #4b5563;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #f3f4f6;
+}
+
+.form-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form-header h2 {
+  font-size: 1.75rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.bus-company {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.bus-company .icon {
+  color: #3b82f6;
+  font-size: 1.5rem;
+}
+
+.bus-company h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.form-section {
+  margin-bottom: 2.5rem;
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+.form-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #374151;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.75rem;
+}
+
+/* Route Container */
+.route-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.route-info {
+  flex: 1;
+  text-align: center;
+}
+
+.route-time {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.route-location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.location-icon {
+  color: #3b82f6;
+}
+
+.route-separator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 1.5rem;
+}
+
+.arrow-icon {
+  color: #9ca3af;
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+.duration {
+  font-size: 0.8rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  margin-top: 0.5rem;
+}
+
+/* Bus Details Grid */
+.bus-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.detail-icon {
+  font-size: 1.5rem;
+  color: #3b82f6;
+  min-width: 32px;
+  text-align: center;
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.detail-item.price-item .detail-value.price {
+  font-size: 1.5rem;
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.scheduled {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.status-badge.on-time {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.delayed {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .bus-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .bus-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .bus-card-summary {
+    padding: 0.75rem;
+  }
+
+  .bus-company h3 {
+    font-size: 1rem;
+  }
+
+  .departure-time .time,
+  .arrival-time .time {
+    font-size: 1rem;
+  }
+
+  .departure-time .date,
+  .arrival-time .date {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .bus-info {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .bus-company {
+    min-width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .bus-time {
+    flex: 1;
+    min-width: 100%;
+    justify-content: space-between;
+  }
+  .bus-details-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .bus-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .bus-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .bus-time {
+    width: 100%;
+    margin: 1rem 0;
+  }
+  
+  .price-tag {
+    width: 100%;
+    text-align: left;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--border);
+  }
+  .booking-page {
+    padding: 1.5rem 1rem;
+  }
+  
+  .bus-card {
+    padding: 1.5rem 1.25rem;
+  }
+  
+  .route-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .route-separator {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    padding: 0.5rem 0;
+  }
+  
+  .arrow-icon {
+    transform: rotate(90deg);
+    margin: 0 1rem;
+  }
+  
+  .bus-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .bus-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .booking-title {
+    font-size: 1.75rem;
+  }
+  
+  .booking-subtitle {
+    font-size: 1rem;
+  }
+}
+.bus-type {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.bus-details {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.route-info {
+  text-align: center;
+}
+
+.route-time {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.route-location {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.route-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+}
+
+.bus-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.seats-available {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #27ae60;
+  font-weight: 500;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.direct-booking-btn {
+  margin-top: 1.5rem;
+  width: 100%;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.direct-booking-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(46, 204, 113, 0.3);
+}
+
+.direct-booking-btn:active {
+  transform: translateY(0);
+}
