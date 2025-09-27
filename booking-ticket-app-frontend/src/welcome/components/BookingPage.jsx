@@ -1,21 +1,11 @@
 import { useState, useEffect } from "react";
 import { getActiveBuses } from "../../utils/api";
-import { 
-  FaBus, 
-  FaMapMarkerAlt, 
-  FaClock, 
-  FaChair, 
-  FaArrowRight, 
-  FaUserTie, 
-  FaPhoneAlt,
-  FaTicketAlt,
-  FaInfoCircle,
-  FaArrowLeft
-} from "react-icons/fa";
+import { FaBus, FaMapMarkerAlt, FaClock, FaChair, FaArrowRight, FaUserTie, FaPhoneAlt, FaTicketAlt, FaInfoCircle, FaArrowLeft, FaMapMarkedAlt } from 'react-icons/fa';
+import LiveMap from './LiveMap';
 import "./BookingPage.css";
 
 // Bus Details Form Component
-const BusDetailsForm = ({ bus, onBack, onBookNow }) => {
+const BusDetailsForm = ({ bus, onBack, onBookNow, onContinueToSeatSelection }) => {
   // Format time to display in 12-hour format
   const formatTime = (dateString) => {
     if (!dateString) return '--:--';
@@ -132,6 +122,7 @@ function BookingPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedBus, setSelectedBus] = useState(null);
+  const [showMap, setShowMap] = useState(false);
 
   // Format price to 2 decimal places
   const formatPrice = (price) => {
@@ -148,10 +139,20 @@ function BookingPage() {
     setSelectedBus(null);
   };
 
-  // Handle book now
+  // Handle book now - show the map
   const handleBookNow = () => {
-    // Implement booking logic here
-    console.log('Booking bus:', selectedBus);
+    setShowMap(true);
+  };
+
+  // Handle continue to seat selection
+  const handleContinueToSeatSelection = () => {
+    // This will be implemented in the next step
+    console.log('Continuing to seat selection for bus:', selectedBus);
+  };
+
+  // Handle back from map
+  const handleBackFromMap = () => {
+    setShowMap(false);
   };
 
   // Format time to display in 12-hour format
@@ -237,6 +238,30 @@ function BookingPage() {
       <div className="booking-page">
         <h1 className="booking-title">No Buses Available</h1>
         <p>There are currently no buses available. Please check back later.</p>
+      </div>
+    );
+  }
+
+  // Show map if in map view
+  if (showMap && selectedBus) {
+    // Add some mock location data for the bus
+    const busWithLocation = {
+      ...selectedBus,
+      location: {
+        lat: -1.9441 + (Math.random() * 0.01 - 0.005), // Random position near Kigali
+        lng: 30.0619 + (Math.random() * 0.01 - 0.005)
+      },
+      status: 'On Time',
+      speed: Math.floor(Math.random() * 40) + 20 + ' km/h'
+    };
+
+    return (
+      <div className="booking-page">
+        <LiveMap 
+          bus={busWithLocation} 
+          onBack={handleBackFromMap}
+          onContinue={handleContinueToSeatSelection}
+        />
       </div>
     );
   }
