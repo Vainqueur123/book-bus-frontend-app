@@ -495,7 +495,8 @@ body {
 
 /* Bus Details Form */
 .bus-details-form {
-  max-width: 800px;
+  max-width: 600px;
+  max-height: 400px;
   margin: 0 auto;
   padding: 2rem;
   background: white;

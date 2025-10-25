@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+ import { useState, useEffect } from "react";
 
 function Authentication({ mode: initialMode, onAuthSuccess, onBack }) {
   const [mode, setMode] = useState(initialMode);
