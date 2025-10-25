@@ -248,7 +248,7 @@ body {
   background-color: #0d1b33;
   padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   z-index: 1000;
   color: #e0e0e0;
 }
@@ -371,7 +371,6 @@ body {
   color: #00bfff;
 }
 
-
 @media (max-width: 1024px) {
   .booking-grid {
     grid-template-columns: 1fr;
@@ -420,7 +419,9 @@ body {
     margin: 4px;
   }
 
-  .bus-btn, .summary-btn, .btn {
+  .bus-btn,
+  .summary-btn,
+  .btn {
     font-size: 14px;
     padding: 8px 12px;
   }

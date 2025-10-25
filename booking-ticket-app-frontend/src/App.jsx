@@ -1,7 +1,7 @@
-import { Routes, Route } from "react-router-dom";
-import BookingPage from "./welcome/components/BookingPage";
-import Settings from "./welcome/components/Setting";
-import Welcoming from "./welcome/components/welcoming";
+import { Routes, Route } from 'react-router-dom';
+import BookingPage from './welcome/components/BookingPage';
+import Settings from './welcome/components/Setting';
+import Welcoming from './welcome/components/welcoming';
 
 function App() {
   return (

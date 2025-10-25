@@ -1,49 +1,55 @@
- import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 function Authentication({ mode: initialMode, onAuthSuccess, onBack }) {
   const [mode, setMode] = useState(initialMode);
-  const [form, setForm] = useState({ username: "", email: "", password: "", confirm: "" });
-  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirm: '',
+  });
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setMode(initialMode);
   }, [initialMode]);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const validate = () => {
-    if (mode === "signup") {
-      if (!form.username) return "Username required";
-      if (!/\S+@\S+\.\S+/.test(form.email)) return "Invalid email";
-      if (form.password.length < 6) return "Password too short";
-      if (form.password !== form.confirm) return "Passwords do not match";
+    if (mode === 'signup') {
+      if (!form.username) return 'Username required';
+      if (!/\S+@\S+\.\S+/.test(form.email)) return 'Invalid email';
+      if (form.password.length < 6) return 'Password too short';
+      if (form.password !== form.confirm) return 'Passwords do not match';
     }
-    if (mode === "signin") {
-      if (!/\S+@\S+\.\S+/.test(form.email)) return "Invalid email";
-      if (!form.password) return "Password required";
+    if (mode === 'signin') {
+      if (!/\S+@\S+\.\S+/.test(form.email)) return 'Invalid email';
+      if (!form.password) return 'Password required';
     }
     return null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     const err = validate();
     if (err) return setError(err);
 
     setLoading(true);
     try {
       const res = await fetch(`http://localhost:5000/auth/${mode}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
       const data = await res.json();
       if (data.success) onAuthSuccess(data.user);
-      else setError(data.message || "Auth failed");
+      else setError(data.message || 'Auth failed');
     } catch {
-      setError("Server error");
+      setError('Server error');
     } finally {
       setLoading(false);
     }
@@ -52,7 +58,7 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack }) {
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
-        {mode === "signup" && (
+        {mode === 'signup' && (
           <div className="form-group">
             <input
               name="username"
@@ -89,7 +95,7 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack }) {
           />
         </div>
 
-        {mode === "signup" && (
+        {mode === 'signup' && (
           <div className="form-group">
             <input
               name="confirm"
@@ -103,11 +109,19 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack }) {
           </div>
         )}
 
-        <button type="submit" disabled={loading} className="auth-button primary">
-          {loading ? "Processing..." : mode === "signin" ? "Login" : "Signup"}
+        <button
+          type="submit"
+          disabled={loading}
+          className="auth-button primary"
+        >
+          {loading ? 'Processing...' : mode === 'signin' ? 'Login' : 'Signup'}
         </button>
 
-        <button type="button" onClick={onBack} className="auth-button secondary">
+        <button
+          type="button"
+          onClick={onBack}
+          className="auth-button secondary"
+        >
           Back
         </button>
 

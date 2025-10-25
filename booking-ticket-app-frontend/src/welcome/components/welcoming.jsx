@@ -1,12 +1,16 @@
-import { useState } from "react";
-import Authentication from "./Authentication";
+import { useState } from 'react';
+import Authentication from './Authentication';
 
 function Welcoming() {
   const [currentUser, setCurrentUser] = useState(null);
   const [authMode, setAuthMode] = useState(null);
 
   if (currentUser)
-    return <h2 className="welcome-user">Welcome, {currentUser.username || currentUser.email}</h2>;
+    return (
+      <h2 className="welcome-user">
+        Welcome, {currentUser.username || currentUser.email}
+      </h2>
+    );
 
   return (
     <div className="welcome-container">
@@ -14,16 +18,10 @@ function Welcoming() {
 
       {!authMode && (
         <div className="welcome-buttons">
-          <button
-            onClick={() => setAuthMode("signin")}
-            className="btn primary"
-          >
+          <button onClick={() => setAuthMode('signin')} className="btn primary">
             Login
           </button>
-          <button
-            onClick={() => setAuthMode("signup")}
-            className="btn primary"
-          >
+          <button onClick={() => setAuthMode('signup')} className="btn primary">
             Signup
           </button>
         </div>

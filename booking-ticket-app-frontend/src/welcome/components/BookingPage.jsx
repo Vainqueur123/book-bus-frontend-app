@@ -1,19 +1,36 @@
-import { useState, useEffect } from "react";
-import { getActiveBuses } from "../../utils/api";
-import { FaBus, FaMapMarkerAlt, FaClock, FaChair, FaArrowRight, FaUserTie, FaPhoneAlt, FaTicketAlt, FaInfoCircle, FaArrowLeft, FaMapMarkedAlt } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { getActiveBuses } from '../../utils/api';
+import {
+  FaBus,
+  FaMapMarkerAlt,
+  FaClock,
+  FaChair,
+  FaArrowRight,
+  FaUserTie,
+  FaPhoneAlt,
+  FaTicketAlt,
+  FaInfoCircle,
+  FaArrowLeft,
+  FaMapMarkedAlt,
+} from 'react-icons/fa';
 import LiveMap from './LiveMap';
-import "./BookingPage.css";
+import './BookingPage.css';
 
 // Bus Details Form Component
-const BusDetailsForm = ({ bus, onBack, onBookNow, onContinueToSeatSelection }) => {
+const BusDetailsForm = ({
+  bus,
+  onBack,
+  onBookNow,
+  onContinueToSeatSelection,
+}) => {
   // Format time to display in 12-hour format
   const formatTime = (dateString) => {
     if (!dateString) return '--:--';
     const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
   };
 
@@ -24,45 +41,38 @@ const BusDetailsForm = ({ bus, onBack, onBookNow, onContinueToSeatSelection }) =
 
   return (
     <div className="bus-details-form">
-      <button className="back-button" onClick={onBack}>
+      
+      <div className= "bus-details-header">
+        <button className="back-button" onClick={onBack}>
         <FaArrowLeft className="mr-2" /> Back to Buses
       </button>
-      
-      <div className="form-header">
-        <h2>Bus Details</h2>
-        <div className="bus-company">
-          <FaBus className="icon" />
-          <h3>{bus.Company || 'Unknown Company'}</h3>
+        <div className="bus-detail title">Bus Details</div>
+      </div>
+      <div className="bus-logo-time">
+         <div className="bus-company">
+        <FaBus className="icon" />
+        <div>{bus.Company || 'Unknown Company'}</div>
+      </div>
+      <div className="form-section">
+        <div className="start-time">
+          <div className="take-off-point">Take off point:</div>
+          <div>{bus.From || 'Departure'}</div>
+          <div className="bus-name"> {formatTime(bus.departure_time || bus.created_at)}
+          </div>
+          <FaMapMarkerAlt className="location-icon" />
+        </div>
+        <div className="end-time">
+          <div className='end-point'>Destination point:</div>
+          <span>{bus.Destination || 'Destination'}</span>
+          <div className="duration">{bus.duration || '--h --m'}</div>
+          <div className="route-time">{formatTime(bus.arrival_time)}</div>
+          <FaMapMarkerAlt className="location-icon" />
         </div>
       </div>
-
-      <div className="form-section">
-        <h3>Journey Information</h3>
-        <div className="route-container">
-          <div className="route-info">
-            <div className="route-time">{formatTime(bus.departure_time || bus.created_at)}</div>
-            <div className="route-location">
-              <FaMapMarkerAlt className="location-icon" />
-              <span>{bus.From || 'Departure'}</span>
-            </div>
-          </div>
-          
-          <div className="route-separator">
-            <FaArrowRight className="arrow-icon" />
-            <div className="duration">{bus.duration || '--h --m'}</div>
-          </div>
-          
-          <div className="route-info">
-            <div className="route-time">{formatTime(bus.arrival_time)}</div>
-            <div className="route-location">
-              <FaMapMarkerAlt className="location-icon" />
-              <span>{bus.Destination || 'Destination'}</span>
-            </div>
-          </div>
-        </div>
       </div>
+     
 
-      <div className="form-section">
+      <div className="form-section2">
         <h3>Bus Information</h3>
         <div className="bus-details-grid">
           <div className="detail-item">
@@ -72,7 +82,7 @@ const BusDetailsForm = ({ bus, onBack, onBookNow, onContinueToSeatSelection }) =
               <div className="detail-value">{bus.available_seats || 0}</div>
             </div>
           </div>
-          
+
           <div className="detail-item">
             <FaUserTie className="detail-icon" />
             <div>
@@ -80,7 +90,7 @@ const BusDetailsForm = ({ bus, onBack, onBookNow, onContinueToSeatSelection }) =
               <div className="detail-value">{bus.driver || 'Not Assigned'}</div>
             </div>
           </div>
-          
+
           <div className="detail-item">
             <FaPhoneAlt className="detail-icon" />
             <div>
@@ -88,12 +98,14 @@ const BusDetailsForm = ({ bus, onBack, onBookNow, onContinueToSeatSelection }) =
               <div className="detail-value">{bus.contact_number || 'N/A'}</div>
             </div>
           </div>
-          
+
           <div className="detail-item">
             <FaInfoCircle className="detail-icon" />
             <div>
               <div className="detail-label">Status</div>
-              <div className={`status-badge ${bus.status?.toLowerCase() || 'scheduled'}`}>
+              <div
+                className={`status-badge ${bus.status?.toLowerCase() || 'scheduled'}`}
+              >
                 {bus.status || 'Scheduled'}
               </div>
             </div>
@@ -102,7 +114,9 @@ const BusDetailsForm = ({ bus, onBack, onBookNow, onContinueToSeatSelection }) =
           <div className="detail-item price-item">
             <div>
               <div className="detail-label">Price per Seat</div>
-              <div className="detail-value price">${formatPrice(bus.ticket_price)}</div>
+              <div className="detail-value price">
+                ${formatPrice(bus.ticket_price)}
+              </div>
             </div>
           </div>
         </div>
@@ -159,21 +173,21 @@ function BookingPage() {
   const formatTime = (dateString) => {
     if (!dateString) return '--:--';
     const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
     });
   };
-  
+
   // Format date to display day and month
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'short', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
@@ -183,16 +197,16 @@ function BookingPage() {
       try {
         setIsLoading(true);
         console.log('Fetching buses...');
-        
+
         const busesData = await getActiveBuses();
         console.log('Fetched buses:', busesData);
-        
+
         if (!busesData || busesData.length === 0) {
           console.warn('No buses found in the database');
           setError('No buses available at the moment.');
           return;
         }
-        
+
         setBuses(busesData);
       } catch (err) {
         console.error('Error fetching buses:', err);
@@ -222,7 +236,7 @@ function BookingPage() {
         <h1 className="booking-title">Error</h1>
         <div className="error-message">
           <p>{error}</p>
-          <button 
+          <button
             className="btn btn-primary"
             onClick={() => window.location.reload()}
           >
@@ -249,16 +263,16 @@ function BookingPage() {
       ...selectedBus,
       location: {
         lat: -1.9441 + (Math.random() * 0.01 - 0.005), // Random position near Kigali
-        lng: 30.0619 + (Math.random() * 0.01 - 0.005)
+        lng: 30.0619 + (Math.random() * 0.01 - 0.005),
       },
       status: 'On Time',
-      speed: Math.floor(Math.random() * 40) + 20 + ' km/h'
+      speed: Math.floor(Math.random() * 40) + 20 + ' km/h',
     };
 
     return (
       <div className="booking-page">
-        <LiveMap 
-          bus={busWithLocation} 
+        <LiveMap
+          bus={busWithLocation}
           onBack={handleBackFromMap}
           onContinue={handleContinueToSeatSelection}
         />
@@ -270,10 +284,10 @@ function BookingPage() {
   if (selectedBus) {
     return (
       <div className="booking-page">
-        <BusDetailsForm 
-          bus={selectedBus} 
-          onBack={handleBackToList} 
-          onBookNow={handleBookNow} 
+        <BusDetailsForm
+          bus={selectedBus}
+          onBack={handleBackToList}
+          onBookNow={handleBookNow}
         />
       </div>
     );
@@ -284,9 +298,11 @@ function BookingPage() {
     <div className="booking-page">
       <div className="page-header">
         <h1 className="booking-title">Available Buses</h1>
-        <p className="booking-subtitle">Select your preferred bus for booking</p>
+        <p className="booking-subtitle">
+          Select your preferred bus for booking
+        </p>
       </div>
-      
+
       <div className="bus-list">
         {buses.map((bus) => (
           <div key={bus.id} className="bus-card">
@@ -298,8 +314,12 @@ function BookingPage() {
                 </div>
                 <div className="bus-time">
                   <div className="departure-time">
-                    <span className="time">{formatTime(bus.departure_time || bus.created_at)}</span>
-                    <span className="date">{formatDate(bus.departure_time || bus.created_at)}</span>
+                    <span className="time">
+                      {formatTime(bus.departure_time || bus.created_at)}
+                    </span>
+                    <span className="date">
+                      {formatDate(bus.departure_time || bus.created_at)}
+                    </span>
                     <span className="place">{bus.From}</span>
                   </div>
                   <FaArrowRight className="arrow-icon" />
@@ -313,7 +333,7 @@ function BookingPage() {
                   <span className="price-label">per seat</span>
                 </div>
               </div>
-              <button 
+              <button
                 className="view-details-btn"
                 onClick={(e) => {
                   e.stopPropagation();

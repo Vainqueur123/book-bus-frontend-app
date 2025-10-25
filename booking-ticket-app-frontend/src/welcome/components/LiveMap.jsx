@@ -2,17 +2,23 @@ import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { FaBus, FaArrowLeft, FaArrowRight, FaMapMarkerAlt } from 'react-icons/fa';
+import {
+  FaBus,
+  FaArrowLeft,
+  FaArrowRight,
+  FaMapMarkerAlt,
+} from 'react-icons/fa';
 
 // Fix for default marker icons in Leaflet
 const defaultIcon = new L.Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconRetinaUrl:
+    'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 });
 
 // Component to handle map view updates
@@ -62,7 +68,7 @@ function LiveMap({ bus, onBack, onContinue }) {
           </div>
         </div>
       </div>
-      
+
       <div className="map-wrapper">
         <MapContainer
           center={position}
@@ -80,9 +86,16 @@ function LiveMap({ bus, onBack, onContinue }) {
             <Popup>
               <div className="popup-content">
                 <h4>{bus?.name || 'Bus'}</h4>
-                <p>Status: <strong>{bus?.status || 'In Transit'}</strong></p>
-                <p>Speed: <strong>{bus?.speed || 'N/A'} km/h</strong></p>
-                <p>Last Updated: <strong>{new Date().toLocaleTimeString()}</strong></p>
+                <p>
+                  Status: <strong>{bus?.status || 'In Transit'}</strong>
+                </p>
+                <p>
+                  Speed: <strong>{bus?.speed || 'N/A'} km/h</strong>
+                </p>
+                <p>
+                  Last Updated:{' '}
+                  <strong>{new Date().toLocaleTimeString()}</strong>
+                </p>
               </div>
             </Popup>
           </Marker>
@@ -96,7 +109,7 @@ function LiveMap({ bus, onBack, onContinue }) {
         <button className="btn btn-primary" onClick={onContinue}>
           Continue to Seat Selection <FaArrowRight className="ml-2" />
         </button>
-    </div>
+      </div>
 
       <div className="map-legend">
         <h4>Legend</h4>

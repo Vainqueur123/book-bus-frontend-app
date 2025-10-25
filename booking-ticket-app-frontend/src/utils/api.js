@@ -4,31 +4,33 @@ import { supabase } from './supabase';
 export const getActiveBuses = async () => {
   try {
     console.log('🔍 [API] Fetching all active buses from Supabase...');
-    
+
     // Log Supabase client initialization
     console.log('[API] Supabase client initialized:', !!supabase);
-    
+
     // Make the API call
     const { data, error, status } = await supabase
       .from('Activebuses')
       .select('*');
 
     console.log(`[API] Supabase response - Status: ${status}`);
-    
+
     if (error) {
       console.error('❌ [API] Error fetching active buses:', error);
       throw error;
     }
-    
-    console.log(`✅ [API] Successfully fetched ${data?.length || 0} active buses`);
+
+    console.log(
+      `✅ [API] Successfully fetched ${data?.length || 0} active buses`
+    );
     console.log('[API] Sample bus data:', data?.[0] || 'No data');
-    
+
     return data || [];
   } catch (error) {
     console.error('❌ [API] Unhandled error in getActiveBuses:', {
       message: error.message,
       name: error.name,
-      stack: error.stack
+      stack: error.stack,
     });
     throw error;
   }
@@ -38,9 +40,7 @@ export const getActiveBuses = async () => {
 export const getDriverLocations = async () => {
   try {
     console.log('Fetching all driver locations...');
-    const { data, error } = await supabase
-      .from('driver_locations')
-      .select('*');
+    const { data, error } = await supabase.from('driver_locations').select('*');
 
     if (error) throw error;
     console.log('Driver locations data:', data);
@@ -84,7 +84,10 @@ export const getDriverLocationById = async (driverId) => {
     console.log(`Driver ${driverId} location data:`, data);
     return data;
   } catch (error) {
-    console.error(`Error fetching location for driver ${driverId}:`, error.message);
+    console.error(
+      `Error fetching location for driver ${driverId}:`,
+      error.message
+    );
     throw error;
   }
 };

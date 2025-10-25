@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function Settings() {
-  const [username, setUsername] = useState("User123");
-  const [email, setEmail] = useState("user@example.com");
-  const [theme, setTheme] = useState("dark");
+  const [username, setUsername] = useState('User123');
+  const [email, setEmail] = useState('user@example.com');
+  const [theme, setTheme] = useState('dark');
   const [notifications, setNotifications] = useState({
     email: true,
     sms: false,
