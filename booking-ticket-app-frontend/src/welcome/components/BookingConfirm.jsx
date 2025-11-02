@@ -13,15 +13,29 @@ const mockTicketData = {
   ticketId: `BUS-TICKET-${Math.floor(Math.random() * 900000 + 100000)}`,
 };
 
-const bankOptions = ['BK (Bank of Kigali)', 'BPR (Banque Populaire du Rwanda)', 'Equity Bank', 'Cogebanque', 'Other'];
+const bankOptions = [
+  'BK (Bank of Kigali)',
+  'BPR (Banque Populaire du Rwanda)',
+  'Equity Bank',
+  'Cogebanque',
+  'Other',
+];
 const cardOptions = ['Mastercard', 'Visa', 'American Express', 'UnionPay'];
 
 const PaymentMethodSelection = ({ onSelect, selectedMethod }) => {
   const methods = [
     { name: 'MTN Mobile Money', icon: '📞', className: 'mobile-money mtn' },
     { name: 'Airtel Money', icon: '📱', className: 'mobile-money airtel' },
-    { name: 'Bank Transfer (Select Bank)', icon: '🏦', className: 'bank-transfer' },
-    { name: 'Credit/Debit Card (Select Card)', icon: '💳', className: 'card-payment' },
+    {
+      name: 'Bank Transfer (Select Bank)',
+      icon: '🏦',
+      className: 'bank-transfer',
+    },
+    {
+      name: 'Credit/Debit Card (Select Card)',
+      icon: '💳',
+      className: 'card-payment',
+    },
   ];
   return (
     <div className="payment-methods-grid">
@@ -32,14 +46,23 @@ const PaymentMethodSelection = ({ onSelect, selectedMethod }) => {
           onClick={() => onSelect(method.name)}
         >
           <span className="method-icon">{method.icon}</span>
-          <span className="method-name">{method.name.includes('(') ? method.name.substring(0, method.name.indexOf('(')).trim() : method.name}</span>
+          <span className="method-name">
+            {method.name.includes('(')
+              ? method.name.substring(0, method.name.indexOf('(')).trim()
+              : method.name}
+          </span>
         </button>
       ))}
     </div>
   );
 };
 
-const SubSelectionPanel = ({ title, options, onSelectSub, currentSelection }) => {
+const SubSelectionPanel = ({
+  title,
+  options,
+  onSelectSub,
+  currentSelection,
+}) => {
   return (
     <div className="sub-selection-panel">
       <p className="sub-title">{title}</p>
@@ -62,10 +85,18 @@ const getExpirationTime = (timeString) => {
   const [hours, minutes] = timeString.split(':').map(Number);
   const now = new Date();
   // We use today's date but the time from mock data (14:30)
-  const arrivalDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0);
-  
+  const arrivalDate = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    hours,
+    minutes,
+    0
+  );
+
   // Calculate expiration time: Arrival time + DISQUALIFICATION_MINUTES
-  const expirationMs = arrivalDate.getTime() + (DISQUALIFICATION_MINUTES * 60 * 1000);
+  const expirationMs =
+    arrivalDate.getTime() + DISQUALIFICATION_MINUTES * 60 * 1000;
   return new Date(expirationMs);
 };
 
@@ -74,7 +105,10 @@ const TicketView = ({ ticketData, seats, onScanSuccess }) => {
   const [isScanned, setIsScanned] = useState(false);
 
   // Memoize expiration time calculation to prevent unnecessary recalculations
-  const expirationTime = useMemo(() => getExpirationTime(ticketData.time), [ticketData.time]);
+  const expirationTime = useMemo(
+    () => getExpirationTime(ticketData.time),
+    [ticketData.time]
+  );
 
   // Set up the 1-second interval timer for the countdown
   useEffect(() => {
@@ -87,21 +121,29 @@ const TicketView = ({ ticketData, seats, onScanSuccess }) => {
 
   const timeRemainingMs = expirationTime.getTime() - currentTime.getTime();
   const isQualified = timeRemainingMs > 0;
-  
+
   const totalSeconds = Math.floor(timeRemainingMs / 1000);
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
-  const statusClass = isScanned ? 'scanned' : (isQualified ? 'qualified' : 'disqualified');
-  const statusText = isScanned ? 'SCANNED - USED' : (isQualified ? 'QUALIFIED' : 'DISQUALIFIED');
-  
+  const statusClass = isScanned
+    ? 'scanned'
+    : isQualified
+      ? 'qualified'
+      : 'disqualified';
+  const statusText = isScanned
+    ? 'SCANNED - USED'
+    : isQualified
+      ? 'QUALIFIED'
+      : 'DISQUALIFIED';
+
   // Only show the live countdown when less than 5 minutes remain
   const showCountdownWarning = isQualified && timeRemainingMs < 300000; // 5 minutes
 
   const handleSimulateScan = () => {
     setIsScanned(true);
     // Call the parent function to mark the ticket as permanently consumed/perished
-    onScanSuccess(); 
+    onScanSuccess();
   };
 
   // If the ticket is scanned, render the final used state
@@ -109,7 +151,10 @@ const TicketView = ({ ticketData, seats, onScanSuccess }) => {
     return (
       <div className="payment-completed-section scanned-success">
         <h2 className="section-title success">Ticket Used Successfully!</h2>
-        <p className="success-message">Ticket **{ticketData.ticketId}** has been validated and consumed by the driver.</p>
+        <p className="success-message">
+          Ticket **{ticketData.ticketId}** has been validated and consumed by
+          the driver.
+        </p>
         <p className="qr-instruction">Thank you for traveling with us.</p>
       </div>
     );
@@ -119,43 +164,65 @@ const TicketView = ({ ticketData, seats, onScanSuccess }) => {
   return (
     <div className="payment-completed-section">
       <h2 className="section-title success">Payment Confirmed!</h2>
-      <p className="success-message">Your ticket for **{seats}** seat(s) is ready.</p>
-      
+      <p className="success-message">
+        Your ticket for **{seats}** seat(s) is ready.
+      </p>
+
       <div className={`qr-code-box ${statusClass}`}>
         <div className="qr-status-indicator">{statusText}</div>
         <div className="qr-placeholder">
           {/* Simple mock QR pattern */}
           <div className="qr-grid">
-            <div className="qr-cell"></div><div className="qr-cell"></div><div className="qr-cell"></div><div className="qr-cell"></div>
-            <div className="qr-cell"></div><div className="qr-cell long"></div><div className="qr-cell"></div><div className="qr-cell"></div>
-            <div className="qr-cell"></div><div className="qr-cell"></div><div className="qr-cell"></div><div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell long"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
+            <div className="qr-cell"></div>
           </div>
           <span className="qr-text">{ticketData.ticketId}</span>
         </div>
       </div>
-      
+
       <p className="qr-instruction">Show this code to the driver.</p>
-      
+
       {showCountdownWarning && (
         <div className="time-warning">
-          <p className="warning-text">⚠️ QR code qualification ends in: <span className="countdown">{minutes}m {seconds}s</span></p>
+          <p className="warning-text">
+            ⚠️ QR code qualification ends in:{' '}
+            <span className="countdown">
+              {minutes}m {seconds}s
+            </span>
+          </p>
         </div>
       )}
       {!isQualified && (
         <div className="time-expired">
-          <p className="expired-text">❌ Ticket expired at **{expirationTime.toLocaleTimeString()}** ({DISQUALIFICATION_MINUTES} min after arrival).</p>
+          <p className="expired-text">
+            ❌ Ticket expired at **{expirationTime.toLocaleTimeString()}** (
+            {DISQUALIFICATION_MINUTES} min after arrival).
+          </p>
         </div>
       )}
 
       <div className="action-buttons">
-        <button className="btn btn-secondary" onClick={handleSimulateScan} disabled={!isQualified}>
+        <button
+          className="btn btn-secondary"
+          onClick={handleSimulateScan}
+          disabled={!isQualified}
+        >
           Simulate Driver Scan ({isQualified ? 'Active' : 'Expired'})
         </button>
       </div>
     </div>
   );
 };
-
 
 function BookingConfirm() {
   const [paymentStatus, setPaymentStatus] = useState('pending');
@@ -169,7 +236,10 @@ function BookingConfirm() {
   const [isTicketConsumed, setIsTicketConsumed] = useState(false);
 
   const totalFare = useMemo(() => {
-    return (numberOfSeats * TICKET_PRICE).toLocaleString('en-RW', { style: 'currency', currency: 'RWF' });
+    return (numberOfSeats * TICKET_PRICE).toLocaleString('en-RW', {
+      style: 'currency',
+      currency: 'RWF',
+    });
   }, [numberOfSeats]);
 
   const finalPaymentItem = useMemo(() => {
@@ -201,18 +271,23 @@ function BookingConfirm() {
       return (
         <div className="payment-completed-section scanned-success">
           <h2 className="section-title success">Ticket Status: USED</h2>
-          <p className="success-message">Ticket **{mockTicketData.ticketId}** was successfully scanned and consumed by the driver.</p>
-          <p className="qr-instruction">This ticket is no longer valid or visible.</p>
+          <p className="success-message">
+            Ticket **{mockTicketData.ticketId}** was successfully scanned and
+            consumed by the driver.
+          </p>
+          <p className="qr-instruction">
+            This ticket is no longer valid or visible.
+          </p>
         </div>
       );
     }
-    
+
     switch (paymentStatus) {
       case 'completed':
         return (
-          <TicketView 
-            ticketData={mockTicketData} 
-            seats={numberOfSeats} 
+          <TicketView
+            ticketData={mockTicketData}
+            seats={numberOfSeats}
             onScanSuccess={() => setIsTicketConsumed(true)}
           />
         );
@@ -220,7 +295,10 @@ function BookingConfirm() {
         return (
           <div className="payment-processing-section">
             <div className="spinner"></div>
-            <p className="processing-text">Processing Payment of **{totalFare}** via **{finalPaymentItem || selectedMethod}**...</p>
+            <p className="processing-text">
+              Processing Payment of **{totalFare}** via **
+              {finalPaymentItem || selectedMethod}**...
+            </p>
             <p className="processing-instruction">Do not close this page.</p>
           </div>
         );
@@ -228,36 +306,52 @@ function BookingConfirm() {
       default: {
         const maxSelectableSeats = 5;
         const maxSeats = Math.min(MAX_SEATS_TO_OFFER, maxSelectableSeats);
-        
+
         const seatOptions = Array.from({ length: maxSeats }, (_, i) => i + 1);
 
         if (numberOfSeats > maxSeats) {
-          setNumberOfSeats(1); 
+          setNumberOfSeats(1);
         }
 
         let isPaymentDetailFilled = false;
-        
+
         // --- Enhanced Confirmation Logic (as requested) ---
         if (finalPaymentItem && finalPaymentItem.includes('Money')) {
           // Mobile Money is "ready" just by selecting it (confirmation message is displayed)
           isPaymentDetailFilled = true;
-        } else if (finalPaymentItem && finalPaymentItem.includes('Bank') && selectedBank) {
+        } else if (
+          finalPaymentItem &&
+          finalPaymentItem.includes('Bank') &&
+          selectedBank
+        ) {
           // Bank requires account holder name
           isPaymentDetailFilled = accountHolderName.length > 3;
-        } else if (finalPaymentItem && finalPaymentItem.includes('Card') && selectedCard) {
+        } else if (
+          finalPaymentItem &&
+          finalPaymentItem.includes('Card') &&
+          selectedCard
+        ) {
           // Card requires account holder name, 16-digit number, and 5-char expiry
-          isPaymentDetailFilled = accountHolderName.length > 3 && cardNumber.length === 16 && cardExpiry.length === 5;
+          isPaymentDetailFilled =
+            accountHolderName.length > 3 &&
+            cardNumber.length === 16 &&
+            cardExpiry.length === 5;
         }
 
-        const isReadyToConfirm = isPaymentDetailFilled && numberOfSeats > 0 && numberOfSeats <= maxSeats;
+        const isReadyToConfirm =
+          isPaymentDetailFilled &&
+          numberOfSeats > 0 &&
+          numberOfSeats <= maxSeats;
 
         return (
           <>
             <div className="payment-selection-section">
               <h2 className="section-title">2. Payment Details</h2>
-              
+
               <div className="seat-selection-box">
-                <label htmlFor="seat-count" className="seat-label">Number of Seats (Max {maxSeats})</label>
+                <label htmlFor="seat-count" className="seat-label">
+                  Number of Seats (Max {maxSeats})
+                </label>
                 <select
                   id="seat-count"
                   className="seat-select-input"
@@ -267,19 +361,28 @@ function BookingConfirm() {
                 >
                   {seatOptions.length > 0 ? (
                     seatOptions.map((num) => (
-                      <option key={num} value={num}>{num} Seat{num > 1 ? 's' : ''}</option>
+                      <option key={num} value={num}>
+                        {num} Seat{num > 1 ? 's' : ''}
+                      </option>
                     ))
                   ) : (
-                    <option value={0} disabled>Seats Fully Booked!</option>
+                    <option value={0} disabled>
+                      Seats Fully Booked!
+                    </option>
                   )}
                 </select>
                 {seatOptions.length > 0 && (
-                  <p className="price-per-seat">Price per seat: {TICKET_PRICE.toLocaleString('en-RW')} RWF</p>
+                  <p className="price-per-seat">
+                    Price per seat: {TICKET_PRICE.toLocaleString('en-RW')} RWF
+                  </p>
                 )}
               </div>
 
               <h3 className="sub-section-title">Select Payment Method</h3>
-              <PaymentMethodSelection onSelect={handleMethodSelection} selectedMethod={selectedMethod} />
+              <PaymentMethodSelection
+                onSelect={handleMethodSelection}
+                selectedMethod={selectedMethod}
+              />
 
               {selectedMethod.includes('Bank') && (
                 <SubSelectionPanel
@@ -297,23 +400,30 @@ function BookingConfirm() {
                   currentSelection={selectedCard}
                 />
               )}
-              
+
               {finalPaymentItem && (
                 <div className="payment-input-area">
-                  <p className="payment-prompt-title">Payment Confirmation Details</p>
-                  
+                  <p className="payment-prompt-title">
+                    Payment Confirmation Details
+                  </p>
+
                   {/* MOBILE MONEY PROMPT (Confirmation message) */}
                   {finalPaymentItem.includes('Money') && (
                     <div className="payment-message mobile-money-message">
-                      A **Mobile Money push notification** for {totalFare} will be sent to your phone shortly. Please authorize the payment there.
+                      A **Mobile Money push notification** for {totalFare} will
+                      be sent to your phone shortly. Please authorize the
+                      payment there.
                     </div>
                   )}
 
                   {/* BANK/CARD COMMON INPUTS */}
-                  {(finalPaymentItem.includes('Bank') || finalPaymentItem.includes('Card')) && (
+                  {(finalPaymentItem.includes('Bank') ||
+                    finalPaymentItem.includes('Card')) && (
                     <>
                       <div className="form-group">
-                        <label className="settings-label">Account Holder Name</label>
+                        <label className="settings-label">
+                          Account Holder Name
+                        </label>
                         <input
                           type="text"
                           className="auth-input"
@@ -329,14 +439,18 @@ function BookingConfirm() {
                   {finalPaymentItem.includes('Card') && (
                     <>
                       <div className="form-group">
-                        <label className="settings-label">Card Number (16 digits)</label>
+                        <label className="settings-label">
+                          Card Number (16 digits)
+                        </label>
                         <input
                           type="text"
                           className="auth-input"
                           placeholder="**** **** **** ****"
                           maxLength="16"
                           value={cardNumber}
-                          onChange={(e) => setCardNumber(e.target.value.replace(/[^0-9]/g, ''))}
+                          onChange={(e) =>
+                            setCardNumber(e.target.value.replace(/[^0-9]/g, ''))
+                          }
                         />
                       </div>
                       <div className="form-group half-width">
@@ -347,7 +461,11 @@ function BookingConfirm() {
                           placeholder="MM/YY"
                           maxLength="5"
                           value={cardExpiry}
-                          onChange={(e) => setCardExpiry(e.target.value.replace(/[^0-9/]/g, ''))}
+                          onChange={(e) =>
+                            setCardExpiry(
+                              e.target.value.replace(/[^0-9/]/g, '')
+                            )
+                          }
                         />
                       </div>
                     </>
@@ -356,12 +474,19 @@ function BookingConfirm() {
               )}
 
               <div className="selected-method-summary">
-                <p>Selected Payment: <span className="method-name-display">{finalPaymentItem || selectedMethod || 'None Selected'}</span></p>
+                <p>
+                  Selected Payment:{' '}
+                  <span className="method-name-display">
+                    {finalPaymentItem || selectedMethod || 'None Selected'}
+                  </span>
+                </p>
               </div>
             </div>
 
             <div className="confirm-fare-box">
-              <div className="fare-label">Total Fare for **{numberOfSeats}** Seat(s)</div>
+              <div className="fare-label">
+                Total Fare for **{numberOfSeats}** Seat(s)
+              </div>
               <div className="fare-amount">{totalFare}</div>
             </div>
 
@@ -372,18 +497,34 @@ function BookingConfirm() {
             >
               Confirm Payment
             </button>
-            <button className="btn btn-secondary btn-cancel">Cancel Booking</button>
+            <button className="btn btn-secondary btn-cancel">
+              Cancel Booking
+            </button>
           </>
         );
       }
     }
-  }, [paymentStatus, numberOfSeats, totalFare, finalPaymentItem, selectedMethod, selectedBank, selectedCard, accountHolderName, cardNumber, cardExpiry, isTicketConsumed]);
+  }, [
+    paymentStatus,
+    numberOfSeats,
+    totalFare,
+    finalPaymentItem,
+    selectedMethod,
+    selectedBank,
+    selectedCard,
+    accountHolderName,
+    cardNumber,
+    cardExpiry,
+    isTicketConsumed,
+  ]);
 
   return (
     <div className="booking-confirm-page">
       <header className="page-header">
         <h1 className="header-title">Booking Confirmation</h1>
-        <p className="header-subtitle">Review your details and complete payment.</p>
+        <p className="header-subtitle">
+          Review your details and complete payment.
+        </p>
       </header>
 
       <div className="main-content-container">
@@ -395,11 +536,15 @@ function BookingConfirm() {
           </div>
           <div className="info-item">
             <span className="info-label">Route:</span>
-            <span className="info-value route-value">{mockTicketData.route}</span>
+            <span className="info-value route-value">
+              {mockTicketData.route}
+            </span>
           </div>
           <div className="info-item">
             <span className="info-label">Date & Time:</span>
-            <span className="info-value">{mockTicketData.date} / {mockTicketData.time}</span>
+            <span className="info-value">
+              {mockTicketData.date} / {mockTicketData.time}
+            </span>
           </div>
           <div className="info-item">
             <span className="info-label">Bus:</span>
@@ -411,9 +556,7 @@ function BookingConfirm() {
           </div>
         </div>
 
-        <div className="payment-detail-panel">
-          {renderPaymentContent()}
-        </div>
+        <div className="payment-detail-panel">{renderPaymentContent()}</div>
       </div>
     </div>
   );

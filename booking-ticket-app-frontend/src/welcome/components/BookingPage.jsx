@@ -15,6 +15,7 @@ import {
 } from 'react-icons/fa';
 import LiveMap from './LiveMap';
 import './BookingPage.css';
+import { Link } from 'react-router-dom';
 
 // Bus Details Form Component
 const BusDetailsForm = ({
@@ -41,36 +42,36 @@ const BusDetailsForm = ({
 
   return (
     <div className="bus-details-form">
-      
-      <div className= "bus-details-header">
+      <div className="bus-details-header">
         <button className="back-button" onClick={onBack}>
-        <FaArrowLeft className="mr-2" /> Back to Buses
-      </button>
+          <FaArrowLeft className="mr-2" /> Back to Buses
+        </button>
         <div className="bus-detail title">Bus Details</div>
       </div>
       <div className="bus-logo-time">
-         <div className="bus-company">
-        <FaBus className="icon" />
-        <div>{bus.Company || 'Unknown Company'}</div>
-      </div>
-      <div className="form-section">
-        <div className="start-time">
-          <div className="take-off-point">Take off point:</div>
-          <div>{bus.From || 'Departure'}</div>
-          <div className="bus-name"> {formatTime(bus.departure_time || bus.created_at)}
+        <div className="bus-company">
+          <FaBus className="icon" />
+          <div>{bus.Company || 'Unknown Company'}</div>
+        </div>
+        <div className="form-section">
+          <div className="start-time">
+            <div className="take-off-point">Take off point:</div>
+            <div>{bus.From || 'Departure'}</div>
+            <div className="bus-name">
+              {' '}
+              {formatTime(bus.departure_time || bus.created_at)}
+            </div>
+            <FaMapMarkerAlt className="location-icon" />
           </div>
-          <FaMapMarkerAlt className="location-icon" />
-        </div>
-        <div className="end-time">
-          <div className='end-point'>Destination point:</div>
-          <span>{bus.Destination || 'Destination'}</span>
-          <div className="duration">{bus.duration || '--h --m'}</div>
-          <div className="route-time">{formatTime(bus.arrival_time)}</div>
-          <FaMapMarkerAlt className="location-icon" />
+          <div className="end-time">
+            <div className="end-point">Destination point:</div>
+            <span>{bus.Destination || 'Destination'}</span>
+            <div className="duration">{bus.duration || '--h --m'}</div>
+            <div className="route-time">{formatTime(bus.arrival_time)}</div>
+            <FaMapMarkerAlt className="location-icon" />
+          </div>
         </div>
       </div>
-      </div>
-     
 
       <div className="form-section2">
         <h3>Bus Information</h3>
@@ -333,15 +334,20 @@ function BookingPage() {
                   <span className="price-label">per seat</span>
                 </div>
               </div>
-              <button
-                className="view-details-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleViewDetails(bus);
-                }}
-              >
-                View Details
-              </button>
+              <div className="bus-first-page-buttons">
+                <div
+                  className="view-details-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleViewDetails(bus);
+                  }}
+                >
+                  View Details
+                </div>
+                <Link to="/seats" className="book-btn">
+                  book now
+                </Link>
+              </div>
             </div>
           </div>
         ))}

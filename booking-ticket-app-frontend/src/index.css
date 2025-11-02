@@ -868,7 +868,7 @@ body {
 }
 
 .section-title.success {
-  color: #4CAF50;
+  color: #4caf50;
   font-size: 28px;
   margin-bottom: 10px;
 }
@@ -903,7 +903,7 @@ body {
 }
 
 .qr-text {
-  color: #4CAF50;
+  color: #4caf50;
   font-size: 12px;
   font-weight: 700;
 }
@@ -927,13 +927,13 @@ body {
 }
 
 .action-buttons .btn-primary {
-  background-color: #4CAF50;
-  border-color: #4CAF50;
+  background-color: #4caf50;
+  border-color: #4caf50;
 }
 
 .action-buttons .btn-primary:hover {
-  background-color: #388E3C;
-  border-color: #388E3C;
+  background-color: #388e3c;
+  border-color: #388e3c;
 }
 
 .payment-processing-section {
