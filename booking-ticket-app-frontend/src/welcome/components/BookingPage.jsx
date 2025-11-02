@@ -332,6 +332,7 @@ function BookingPage() {
                 <div className="price-tag">
                   ${formatPrice(bus.ticket_price)}
                   <span className="price-label">per seat</span>
+                  
                 </div>
               </div>
               <div className="bus-first-page-buttons">
@@ -342,7 +343,7 @@ function BookingPage() {
                     handleViewDetails(bus);
                   }}
                 >
-                  View Details
+                  View details
                 </div>
                 <Link to="/seats" className="book-btn">
                   book now

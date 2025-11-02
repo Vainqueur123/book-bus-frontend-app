@@ -171,29 +171,23 @@ body {
 }
 .bus-first-page-buttons {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   margin-top: 1rem;
+  max-width: 40rem;
 }
 
 .view-details-btn {
-  color: white;
+  margin-left: 12rem;
+  color: hsl(0, 0%, 50%);
+  font-style: italic;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: auto;
-  padding: 0.7rem;
-  transition: all 0.2s ease;
-  font-size: 1rem;
-  background-color: hsl(240, 72%, 60%);
-  border-radius: 0.5rem;
-  max-width: 40%;
+  text-decoration:underline;
+  cursor: pointer;
+  margin-bottom: 1rem;
 }
 
-.view-details-btn:hover {
-  background-color: hsl(240, 72%, 80%);
-}
 .book-btn {
   color: white;
   font-weight: 500;
@@ -204,10 +198,14 @@ body {
   padding: 0.7rem;
   transition: all 0.2s ease;
   font-size: 1rem;
-  background-color: hsl(240, 72%, 60%);
+  background-color: hsl(240, 67%, 60%);
   border-radius: 0.5rem;
-  max-width: 40%;
+  width: 100%;
+  max-width: 20rem;
   text-decoration: none;
+}
+.book-btn:hover {
+  background-color: hsl(240, 67%, 70%);
 }
 /* Expanded Details Section */
 .bus-card-details {
