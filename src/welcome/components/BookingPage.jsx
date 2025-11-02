@@ -134,10 +134,16 @@ const BusDetailsForm = ({
 
 function BookingPage() {
   const [buses, setBuses] = useState([]);
+  const [filteredBuses, setFilteredBuses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedBus, setSelectedBus] = useState(null);
   const [showMap, setShowMap] = useState(false);
+  const [showSearchFields, setShowSearchFields] = useState(false);
+  const [searchParams, setSearchParams] = useState({
+    startPoint: '',
+    endPoint: ''
+  });
 
   // Format price to 2 decimal places
   const formatPrice = (price) => {
@@ -192,6 +198,36 @@ function BookingPage() {
     });
   };
 
+  // Handle search input changes
+  const handleSearchInputChange = (e) => {
+    const { name, value } = e.target;
+    setSearchParams(prev => ({
+      ...prev,
+      [name]: value.toLowerCase()
+    }));
+  };
+
+  // Filter buses based on search parameters
+  const filterBuses = (start, end) => {
+    return buses.filter(bus => {
+      const matchesStart = !start || (bus.From && bus.From.toLowerCase().includes(start));
+      const matchesEnd = !end || (bus.Destination && bus.Destination.toLowerCase().includes(end));
+      return matchesStart && matchesEnd;
+    });
+  };
+
+  // Apply search filter
+  const applySearch = () => {
+    const filtered = filterBuses(searchParams.startPoint, searchParams.endPoint);
+    setFilteredBuses(filtered);
+  };
+
+  // Reset search
+  const resetSearch = () => {
+    setSearchParams({ startPoint: '', endPoint: '' });
+    setFilteredBuses(buses);
+  };
+
   // Fetch active buses when component mounts
   useEffect(() => {
     const fetchBuses = async () => {
@@ -209,6 +245,7 @@ function BookingPage() {
         }
 
         setBuses(busesData);
+        setFilteredBuses(busesData); // Initialize filteredBuses with all buses
       } catch (err) {
         console.error('Error fetching buses:', err);
         setError('Failed to load buses. Please try again later.');
@@ -302,10 +339,71 @@ function BookingPage() {
         <p className="booking-subtitle">
           Select your preferred bus for booking
         </p>
+        
+        {/* Search Bar */}
+        <div className="search-container">
+          {!showSearchFields ? (
+            <div 
+              className="search-placeholder"
+              onClick={() => setShowSearchFields(true)}
+            >
+              <FaMapMarkedAlt className="search-icon" />
+              <span>Wanna go somewhere?</span>
+            </div>
+          ) : (
+            <div className="search-fields">
+              <div className="search-input-group">
+                <FaMapMarkerAlt className="search-field-icon" />
+                <input
+                  type="text"
+                  name="startPoint"
+                  placeholder="From"
+                  value={searchParams.startPoint}
+                  onChange={handleSearchInputChange}
+                  className="search-input"
+                />
+              </div>
+              <div className="search-input-group">
+                <FaMapMarkerAlt className="search-field-icon" />
+                <input
+                  type="text"
+                  name="endPoint"
+                  placeholder="To"
+                  value={searchParams.endPoint}
+                  onChange={handleSearchInputChange}
+                  className="search-input"
+                />
+              </div>
+              <div className="search-buttons">
+                <button 
+                  className="search-apply"
+                  onClick={applySearch}
+                  disabled={!searchParams.startPoint && !searchParams.endPoint}
+                >
+                  Search
+                </button>
+                <button 
+                  className="search-clear"
+                  onClick={resetSearch}
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="bus-list">
-        {buses.map((bus) => (
+        {filteredBuses.length === 0 ? (
+          <div className="no-results">
+            <p>No buses found matching your search criteria.</p>
+            <button onClick={resetSearch} className="reset-search-btn">
+              Clear search and show all buses
+            </button>
+          </div>
+        ) : (
+          filteredBuses.map((bus) => (
           <div key={bus.id} className="bus-card">
             <div className="bus-card-summary">
               <div className="bus-info">
@@ -351,7 +449,8 @@ function BookingPage() {
               </div>
             </div>
           </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
