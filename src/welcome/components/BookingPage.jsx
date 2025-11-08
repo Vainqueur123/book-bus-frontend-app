@@ -15,7 +15,7 @@ import {
 } from 'react-icons/fa';
 import LiveMap from './LiveMap';
 import './BookingPage.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // Bus Details Form Component
 const BusDetailsForm = ({
@@ -144,6 +144,7 @@ function BookingPage() {
     startPoint: '',
     endPoint: ''
   });
+  const location = useLocation();
 
   // Format price to 2 decimal places
   const formatPrice = (price) => {
@@ -256,6 +257,30 @@ function BookingPage() {
 
     fetchBuses();
   }, []);
+
+  // Read URL query params (?from=...&to=...) and prefill + filter when buses are ready
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const from = params.get('from') || '';
+    const to = params.get('to') || '';
+    if (!from && !to) return;
+    // Prefill fields
+    setSearchParams({
+      startPoint: from,
+      endPoint: to,
+    });
+    // Apply filter if we have buses
+    if (buses.length > 0) {
+      const filtered = buses.filter((bus) => {
+        const start = from.toLowerCase();
+        const end = to.toLowerCase();
+        const matchesStart = !start || (bus.From && bus.From.toLowerCase().includes(start));
+        const matchesEnd = !end || (bus.Destination && bus.Destination.toLowerCase().includes(end));
+        return matchesStart && matchesEnd;
+      });
+      setFilteredBuses(filtered);
+    }
+  }, [location.search, buses]);
 
   if (isLoading) {
     return (
