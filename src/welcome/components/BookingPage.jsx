@@ -331,6 +331,82 @@ function BookingPage() {
     );
   }
 
+  // Render the bus list if no bus is selected and not showing map
+  const renderBusList = () => {
+    if (isLoading) {
+      return (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading available buses...</p>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="error-message">
+          <p>Error loading buses: {error}</p>
+          <button className="retry-button" onClick={fetchBuses}>
+            Retry
+          </button>
+        </div>
+      );
+    }
+
+    if (filteredBuses.length === 0) {
+      return (
+        <div className="no-buses">
+          <p>No buses available for the selected route.</p>
+          <button className="clear-filters" onClick={resetSearch}>
+            Clear filters
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bus-list-container">
+        <div className="bus-list-header">
+          <div className="header-company">Company</div>
+          <div className="header-route">Route</div>
+          <div className="header-actions">Actions</div>
+        </div>
+        <div className="buses-list">
+          {filteredBuses.map((bus) => (
+            <div key={bus.id} className="bus-list-item">
+              <div className="bus-company">
+                <FaBus className="bus-icon" />
+                <span>{bus.Company || 'Unknown Company'}</span>
+              </div>
+              <div className="bus-route">
+                <span className="from">{bus.From || 'Departure'}</span>
+                <FaArrowRight className="route-arrow" />
+                <span className="to">{bus.Destination || 'Destination'}</span>
+              </div>
+              <div className="bus-actions">
+                <button
+                  className="view-details-btn"
+                  onClick={() => handleViewDetails(bus)}
+                >
+                  View Details
+                </button>
+                <button
+                  className="book-now-btn"
+                  onClick={() => {
+                    setSelectedBus(bus);
+                    handleBookNow();
+                  }}
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // Show bus list if no bus is selected
   return (
     <div className="booking-page">
@@ -342,116 +418,50 @@ function BookingPage() {
         
         {/* Search Bar */}
         <div className="search-container">
-          {!showSearchFields ? (
-            <div 
-              className="search-placeholder"
-              onClick={() => setShowSearchFields(true)}
-            >
-              <FaMapMarkedAlt className="search-icon" />
-              <span>Wanna go somewhere?</span>
+          <div className="search-fields">
+            <div className="search-input-group">
+              <FaMapMarkerAlt className="search-field-icon" />
+              <input
+                type="text"
+                name="startPoint"
+                placeholder="From"
+                value={searchParams.startPoint}
+                onChange={handleSearchInputChange}
+                className="search-input"
+              />
             </div>
-          ) : (
-            <div className="search-fields">
-              <div className="search-input-group">
-                <FaMapMarkerAlt className="search-field-icon" />
-                <input
-                  type="text"
-                  name="startPoint"
-                  placeholder="From"
-                  value={searchParams.startPoint}
-                  onChange={handleSearchInputChange}
-                  className="search-input"
-                />
-              </div>
-              <div className="search-input-group">
-                <FaMapMarkerAlt className="search-field-icon" />
-                <input
-                  type="text"
-                  name="endPoint"
-                  placeholder="To"
-                  value={searchParams.endPoint}
-                  onChange={handleSearchInputChange}
-                  className="search-input"
-                />
-              </div>
-              <div className="search-buttons">
-                <button 
-                  className="search-apply"
-                  onClick={applySearch}
-                  disabled={!searchParams.startPoint && !searchParams.endPoint}
-                >
-                  Search
-                </button>
-                <button 
-                  className="search-clear"
-                  onClick={resetSearch}
-                >
-                  Clear
-                </button>
-              </div>
+            <div className="search-input-group">
+              <FaMapMarkerAlt className="search-field-icon" />
+              <input
+                type="text"
+                name="endPoint"
+                placeholder="To"
+                value={searchParams.endPoint}
+                onChange={handleSearchInputChange}
+                className="search-input"
+              />
             </div>
-          )}
+            <div className="search-buttons">
+              <button 
+                className="search-apply" 
+                onClick={applySearch}
+                disabled={!searchParams.startPoint || !searchParams.endPoint}
+              >
+                Search
+              </button>
+              <button 
+                className="search-clear" 
+                onClick={resetSearch}
+                disabled={!searchParams.startPoint && !searchParams.endPoint}
+              >
+                Clear
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="bus-list">
-        {filteredBuses.length === 0 ? (
-          <div className="no-results">
-            <p>No buses found matching your search criteria.</p>
-            <button onClick={resetSearch} className="reset-search-btn">
-              Clear search and show all buses
-            </button>
-          </div>
-        ) : (
-          filteredBuses.map((bus) => (
-          <div key={bus.id} className="bus-card">
-            <div className="bus-card-summary">
-              <div className="bus-info">
-                <div className="bus-company">
-                  <FaBus className="icon" />
-                  <h3>{bus.Company || 'Unknown Company'}</h3>
-                </div>
-                <div className="bus-time">
-                  <div className="departure-time">
-                    <span className="time">
-                      {formatTime(bus.departure_time || bus.created_at)}
-                    </span>
-                    <span className="date">
-                      {formatDate(bus.departure_time || bus.created_at)}
-                    </span>
-                    <span className="place">{bus.From}</span>
-                  </div>
-                  <FaArrowRight className="arrow-icon" />
-                  <div className="arrival-time">
-                    <span className="time">{formatTime(bus.arrival_time)}</span>
-                    <span className="place">{bus.Destination}</span>
-                  </div>
-                </div>
-                <div className="price-tag">
-                  ${formatPrice(bus.ticket_price)}
-                  <span className="price-label">per seat</span>
-                  
-                </div>
-              </div>
-              <div className="bus-first-page-buttons">
-                <div
-                  className="view-details-btn"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleViewDetails(bus);
-                  }}
-                >
-                  View details
-                </div>
-                <Link to="/seats" className="book-btn">
-                  book now
-                </Link>
-              </div>
-            </div>
-          </div>
-          ))
-        )}
-      </div>
+      
+      {renderBusList()}
     </div>
   );
 }

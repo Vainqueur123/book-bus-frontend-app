@@ -195,6 +195,148 @@ body {
   font-weight: 400;
 }
 
+/* Bus List Container */
+.bus-list-container {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+/* Bus List Header */
+.bus-list-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-company,
+.header-route,
+.header-actions {
+  padding: 0.5rem;
+}
+
+/* Buses List */
+.buses-list {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* Bus List Item */
+.bus-list-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+  align-items: center;
+}
+
+.bus-list-item:last-child {
+  border-bottom: none;
+}
+
+.bus-list-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Bus Company */
+.bus-company {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.bus-icon {
+  color: var(--primary);
+  font-size: 1.25rem;
+}
+
+/* Bus Route */
+.bus-route {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text);
+}
+
+.route-arrow {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin: 0 0.5rem;
+}
+
+.from, .to {
+  font-weight: 500;
+  min-width: 120px;
+}
+
+/* Bus Actions */
+.bus-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.view-details-btn,
+.book-now-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.view-details-btn {
+  background-color: #f1f5f9;
+  color: var(--primary);
+}
+
+.view-details-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.book-now-btn {
+  background-color: var(--primary);
+  color: white;
+}
+
+.book-now-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bus-list-header {
+    display: none;
+  }
+  
+  .bus-list-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .bus-actions {
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+  
+  .bus-route {
+    margin: 0.5rem 0;
+  }
+}
+
 /* Bus List */
 .bus-list {
   display: grid;
