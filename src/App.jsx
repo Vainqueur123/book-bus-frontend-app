@@ -12,10 +12,15 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<Welcoming />} />
-        <Route path="/booking" element={<BookingPage />} />
+        {/* <Route path="/booking" element={<BookingPage />} /> */}
         <Route path="/settings" element={<Settings />} />
-        <Route path="/seats" element={<BookingConfirm />} />
+        {/* <Route path="/seats" element={<BookingConfirm />} /> */}
       </Route>
+      {/* <Route path="/" element={<Welcoming />} /> */}
+      <Route path="/booking" element={<BookingPage />} />
+
+      {/* <Route path="/settings" element={<Settings />} /> */}
+      <Route path="/booking/seats" element={<BookingConfirm />} />
     </Routes>
   );
 }

@@ -6,7 +6,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #0d0d0d, #001f4d);
+  background: linear-gradient(135deg, hsl(0, 100%, 100%), hsl(216, 70%, 39%));
   color: #e0e0e0;
   line-height: 1.5;
 }
