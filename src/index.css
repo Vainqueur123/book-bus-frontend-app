@@ -48,21 +48,17 @@ body {
   position: absolute;
   top: 6px;
   right: 8px;
-  width: 26px;
-  height: 26px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(255,255,255,0.08);
+  background: transparent;
+  border: none;
   color: #ffffff;
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 18px;
+  line-height: 1;
   text-align: center;
   cursor: pointer;
   transition: all 160ms ease;
 }
 .auth-close:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: rgba(255,255,255,0.6);
+  color: #93c5fd;
   transform: translateY(-1px);
 }
 .auth-close:focus-visible {
@@ -127,6 +123,26 @@ body {
   font-size: 14px;
   text-align: center;
 }
+
+/* Auth mode switch row under buttons */
+.auth-switch {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+.auth-link {
+  background: transparent;
+  border: none;
+  color: #93c5fd;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.auth-link:hover { color: #bfdbfe; }
 
 .booking-page {
   max-width: 1200px;

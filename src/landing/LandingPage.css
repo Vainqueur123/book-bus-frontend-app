@@ -25,7 +25,7 @@ header.navbar {
 }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
 .logo { font-weight: 800; font-size: 20px; letter-spacing: 0.5px; cursor: pointer; color: #ffffff; }
-.nav-actions { display: flex; gap: 12px; align-items: center; }
+.nav-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .nav-link {
   color: #ffffff;
   text-decoration: none;
@@ -80,7 +80,9 @@ header.navbar {
 /* Gallery - horizontal carousel */
 .gallery { padding: 40px 0 72px; }
 .section-title { font-size: 22px; font-weight: 800; margin-bottom: 12px; }
-.card-grid { display: flex; gap: 14px; overflow: hidden; scroll-behavior: smooth; scroll-snap-type: x mandatory; }
+.card-grid { display: flex; gap: 14px; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 6px; }
+.card-grid::-webkit-scrollbar { height: 6px; }
+.card-grid::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
 .card { min-width: 280px; max-width: 280px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--card); transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 10px 25px rgba(2,6,23,0.08), 0 2px 8px rgba(2,6,23,0.06); scroll-snap-align: start; }
 .card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(2,6,23,0.12), 0 4px 14px rgba(2,6,23,0.08); }
 .card-image { height: 160px; background-size: cover; background-position: center; }
@@ -110,6 +112,7 @@ footer.footer {
   inset: 0;
   background: rgba(0, 0, 0, 0.28); /* soft grey/black tint */
   backdrop-filter: blur(3px); /* subtle blur so content is still visible */
+  -webkit-backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,6 +139,7 @@ footer.footer {
   animation: modalIn 230ms cubic-bezier(0.22, 1, 0.36, 1);
   transform-origin: top center;
   will-change: transform, opacity;
+  max-width: 92vw; /* ensure fits on small screens */
 }
 .modal-title {
   margin: 0 0 12px;
@@ -165,4 +169,82 @@ footer.footer {
 @keyframes modalIn {
   from { opacity: 0; transform: translateY(-8px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/*
+| Responsive adjustments
+*/
+/* Toast styles */
+.toast {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background: rgba(17, 24, 39, 0.92);
+  color: #e5e7eb;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: toastIn 220ms ease-out;
+}
+.toast-close {
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-size: 16px;
+  cursor: pointer;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@media (max-width: 1024px) {
+  .container { width: min(1100px, 94%); }
+  .nav-inner { padding: 12px 0; }
+}
+
+@media (max-width: 768px) {
+  .container { width: 94%; }
+  .nav-inner { padding: 10px 0; gap: 10px; flex-wrap: wrap; }
+  .logo { font-size: 18px; }
+  .nav-actions { gap: 10px; justify-content: flex-end; }
+  .nav-link { padding: 7px 12px; font-size: 13px; }
+  .btn { padding: 8px 14px; font-size: 13px; }
+
+  .hero { padding: 48px 0 24px; }
+  .hero-subtitle { font-size: 14px; }
+
+  .card { min-width: 240px; max-width: 240px; }
+}
+
+@media (max-width: 560px) {
+  .container { width: 92%; }
+  .nav-inner { gap: 10px; }
+  /* Keep actions compact and aligned to the right on mobile */
+  .nav-actions { gap: 8px; width: auto; justify-content: flex-end; margin-left: auto; }
+  .logo { font-size: 17px; }
+
+  .search-form { grid-template-columns: 1fr; padding: 12px; gap: 10px; }
+  .input-group { padding: 10px; }
+
+  .card-grid { gap: 12px; }
+  .card { min-width: 220px; max-width: 220px; }
+
+  .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .nav-actions { gap: 6px; width: auto; justify-content: flex-end; margin-left: auto; }
+  /* Smaller Login */
+  .nav-link { padding: 6px 10px; font-size: 12px; text-align: center; }
+  /* Smaller Sign up (primary) */
+  .btn { padding: 7px 10px; font-size: 12px; }
+  .btn-cta { padding: 7px 10px; font-size: 12px; }
+  .card { min-width: 190px; max-width: 190px; }
 }
