@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import './LandingPage.css';
 
-function Hero() {
+function Hero({ user, onRequireAuth, onNotify }) {
   const navigate = useNavigate();
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
