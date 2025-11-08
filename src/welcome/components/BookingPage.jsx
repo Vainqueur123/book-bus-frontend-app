@@ -370,8 +370,12 @@ function BookingPage() {
                   <span className="to">{bus.Destination || 'Destination'}</span>
                   {bus.created_at && (
                     <span className="created-time">
-                      Departure time:{' '}
-                      {new Date(bus.created_at).toLocaleString()}
+                      <FaClock className="time-icon" />
+                      {new Date(bus.created_at).toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                      })}
                     </span>
                   )}
                 </div>

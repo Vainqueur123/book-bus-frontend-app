@@ -13,7 +13,6 @@
   --transition: all 0.3s ease;
 }
 
-/* Reset & Base */
 * {
   margin: 0;
   padding: 0;
@@ -46,7 +45,7 @@ body {
   flex-wrap: wrap;
   gap: 1.5rem;
 }
-/* Booking header styles */
+
 .booking-header {
   display: flex;
   flex-direction: column;
@@ -55,7 +54,6 @@ body {
   margin-bottom: 1.5rem;
 }
 
-/* Company filter container */
 .company-filter {
   position: relative;
   width: 100%;
@@ -77,9 +75,7 @@ body {
   background-position: right 0.75rem center;
   background-size: 1rem;
   cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .company-select:focus {
@@ -90,6 +86,71 @@ body {
 
 .company-select:hover {
   border-color: var(--primary);
+}
+
+.booking-title {
+  color: var(--text);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.booking-subtitle {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.bus-list-container {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.bus-list-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-company,
+.header-route,
+.header-actions {
+  padding: 0.5rem;
+}
+
+.buses-list {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.bus-list-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 0.2rem 1rem;
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+  align-items: center;
+  height: 6rem;
+}
+
+.bus-list-item:last-child {
+  border-bottom: none;
+}
+
+.bus-list-item:hover {
+  background-color: #f8f9fa;
 }
 
 /* Responsive adjustments */
@@ -113,89 +174,19 @@ body {
   }
 }
 
-/* For very small screens */
 @media (max-width: 360px) {
   .booking-title {
     font-size: 1.75rem;
   }
-  
+
   .booking-subtitle {
     font-size: 0.95rem;
   }
-  
+
   .company-select {
     padding: 0.5rem 2rem 0.5rem 0.75rem;
     font-size: 0.9rem;
   }
-}
-
-.booking-title {
-  color: var(--text);
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-}
-
-.booking-subtitle {
-  color: var(--text-light);
-  font-size: 1.1rem;
-  font-weight: 400;
-}
-
-/* Bus List Container */
-.bus-list-container {
-  background: #fff;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  margin-top: 2rem;
-}
-
-/* Bus List Header */
-.bus-list-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  background-color: #f8f9fa;
-  padding: 1rem 1.5rem;
-  font-weight: 600;
-  color: var(--text);
-  border-bottom: 1px solid var(--border);
-}
-
-.header-company,
-.header-route,
-.header-actions {
-  padding: 0.5rem;
-}
-
-/* Buses List */
-.buses-list {
-  max-height: 100vh;
-  overflow-y: auto;
-}
-
-/* Bus List Item */
-.bus-list-item {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid var(--border);
-  transition: var(--transition);
-  align-items: center;
-  min-height: 6rem;
-}
-
-.bus-list-item:last-child {
-  border-bottom: none;
-}
-
-.bus-list-item:hover {
-  background-color: #f8f9fa;
 }
 
 /* Bus Company */
@@ -242,10 +233,33 @@ body {
 }
 
 .created-time {
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+}
+
+.time-icon {
+  color: var(--primary);
   font-size: 0.8rem;
-  color: var(--text-light);
-  font-weight: 400;
-  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .created-time {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.4rem;
+    margin-top: 0.5rem;
+  }
+  
+  .time-icon {
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1059,7 +1073,7 @@ body {
 .btn {
   display: inline-flex;
   align-items: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem;
   border-radius: 8px;
   font-weight: 500;
   font-size: 1rem;
@@ -1332,4 +1346,89 @@ body {
 
 .direct-booking-btn:active {
   transform: translateY(0);
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bus-list-container {
+    width:100%;
+  }
+  .bus-list-header{
+    font-size: 0.5rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: solid;  
+  }
+ .bus-company{
+    display :flex;
+    align-items: center;
+    font-size:0.5rem;
+    font-weight: bold;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+  .bus-list-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 0.1rem;
+    padding: 1rem;
+    height: 6rem;
+    overflow-y:visible;
+  }
+ 
+  .bus-actions {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    gap: 0.5rem;
+  }
+
+  .bus-route {
+    display: flex;
+    flex-direction: row;
+    font-size:0.5rem;
+    margin:none;
+    flex-wrap:nowrap;
+    padding: 0.5rem;
+    gap: 0;
+    
+  }
+  .from{
+    margin-left: 0;
+    padding :none;
+    margin-right: 0.5rem;
+  }
+  .route-arrow{
+    margin-left: 0.5rem;
+    margin-top: 0;
+    height: 1rem;
+    margin-left: 0;
+    padding: none;
+    margin:none;
+    font-size: 0.5rem;
+    margin-right: 0.5rem;
+    
+  }
+
+  .to{
+    margin-top: 0.4rem;
+    margin-left: 0;
+    height: 1rem;
+    padding: none;
+    margin-right: 0rem;
+  }
+  .created-time{
+    margin-top: 0;
+    font-size: 0.4rem;
+  }
+  
+  .view-details-btn,
+  .book-now-btn {
+    font-size: 0.4rem;
+    padding: 0.3rem;
+    margin-left: 0.1rem;
+  }
+  .book-now-btn{
+    border-radius:0.2rem;
+  }
 }
