@@ -58,6 +58,17 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack }) {
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
+        <button
+          type="button"
+          className="auth-close"
+          onClick={onBack}
+          aria-label="Close"
+        >
+          ×
+        </button>
+        <h2 className="auth-title">
+          {mode === 'signup' ? 'Create Account' : 'Log in to your account'}
+        </h2>
         {mode === 'signup' && (
           <div className="form-group">
             <input
