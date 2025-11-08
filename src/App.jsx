@@ -11,7 +11,7 @@ function App() {
       <Route path="/booking" element={<BookingPage />} />
 
       <Route path="/settings" element={<Settings />} />
-      <Route path="/seats" element={<BookingConfirm />} />
+      <Route path="/booking/seats" element={<BookingConfirm />} />
     </Routes>
   );
 }

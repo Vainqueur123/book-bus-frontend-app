@@ -139,11 +139,8 @@ function BookingPage() {
   const [error, setError] = useState(null);
   const [selectedBus, setSelectedBus] = useState(null);
   const [showMap, setShowMap] = useState(false);
-  const [showSearchFields, setShowSearchFields] = useState(false);
-  const [searchParams, setSearchParams] = useState({
-    startPoint: '',
-    endPoint: ''
-  });
+  const [selectedCompany, setSelectedCompany] = useState('');
+  const [companies, setCompanies] = useState([]);
 
   // Format price to 2 decimal places
   const formatPrice = (price) => {
@@ -198,36 +195,6 @@ function BookingPage() {
     });
   };
 
-  // Handle search input changes
-  const handleSearchInputChange = (e) => {
-    const { name, value } = e.target;
-    setSearchParams(prev => ({
-      ...prev,
-      [name]: value.toLowerCase()
-    }));
-  };
-
-  // Filter buses based on search parameters
-  const filterBuses = (start, end) => {
-    return buses.filter(bus => {
-      const matchesStart = !start || (bus.From && bus.From.toLowerCase().includes(start));
-      const matchesEnd = !end || (bus.Destination && bus.Destination.toLowerCase().includes(end));
-      return matchesStart && matchesEnd;
-    });
-  };
-
-  // Apply search filter
-  const applySearch = () => {
-    const filtered = filterBuses(searchParams.startPoint, searchParams.endPoint);
-    setFilteredBuses(filtered);
-  };
-
-  // Reset search
-  const resetSearch = () => {
-    setSearchParams({ startPoint: '', endPoint: '' });
-    setFilteredBuses(buses);
-  };
-
   // Fetch active buses when component mounts
   useEffect(() => {
     const fetchBuses = async () => {
@@ -244,8 +211,14 @@ function BookingPage() {
           return;
         }
 
+        // Extract unique companies
+        const uniqueCompanies = [
+          ...new Set(busesData.map((bus) => bus.Company).filter(Boolean)),
+        ].sort();
+        setCompanies(uniqueCompanies);
+
         setBuses(busesData);
-        setFilteredBuses(busesData); // Initialize filteredBuses with all buses
+        setFilteredBuses(busesData);
       } catch (err) {
         console.error('Error fetching buses:', err);
         setError('Failed to load buses. Please try again later.');
@@ -256,6 +229,21 @@ function BookingPage() {
 
     fetchBuses();
   }, []);
+
+  // Filter buses by selected company
+  useEffect(() => {
+    if (!selectedCompany) {
+      setFilteredBuses(buses);
+    } else {
+      const filtered = buses.filter((bus) => bus.Company === selectedCompany);
+      setFilteredBuses(filtered);
+    }
+  }, [selectedCompany, buses]);
+
+  // Handle company filter change
+  const handleCompanyChange = (e) => {
+    setSelectedCompany(e.target.value || '');
+  };
 
   if (isLoading) {
     return (
@@ -356,10 +344,7 @@ function BookingPage() {
     if (filteredBuses.length === 0) {
       return (
         <div className="no-buses">
-          <p>No buses available for the selected route.</p>
-          <button className="clear-filters" onClick={resetSearch}>
-            Clear filters
-          </button>
+          <p>No buses available at the moment.</p>
         </div>
       );
     }
@@ -381,7 +366,15 @@ function BookingPage() {
               <div className="bus-route">
                 <span className="from">{bus.From || 'Departure'}</span>
                 <FaArrowRight className="route-arrow" />
-                <span className="to">{bus.Destination || 'Destination'}</span>
+                <div className="destination-with-time">
+                  <span className="to">{bus.Destination || 'Destination'}</span>
+                  {bus.created_at && (
+                    <span className="created-time">
+                      Departure time:{' '}
+                      {new Date(bus.created_at).toLocaleString()}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="bus-actions">
                 <button
@@ -390,7 +383,8 @@ function BookingPage() {
                 >
                   View Details
                 </button>
-                <button
+                <Link
+                  to="/booking/seats"
                   className="book-now-btn"
                   onClick={() => {
                     setSelectedBus(bus);
@@ -398,7 +392,7 @@ function BookingPage() {
                   }}
                 >
                   Book Now
-                </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -411,56 +405,30 @@ function BookingPage() {
   return (
     <div className="booking-page">
       <div className="page-header">
-        <h1 className="booking-title">Available Buses</h1>
-        <p className="booking-subtitle">
-          Select your preferred bus for booking
-        </p>
-        
-        {/* Search Bar */}
-        <div className="search-container">
-          <div className="search-fields">
-            <div className="search-input-group">
-              <FaMapMarkerAlt className="search-field-icon" />
-              <input
-                type="text"
-                name="startPoint"
-                placeholder="From"
-                value={searchParams.startPoint}
-                onChange={handleSearchInputChange}
-                className="search-input"
-              />
-            </div>
-            <div className="search-input-group">
-              <FaMapMarkerAlt className="search-field-icon" />
-              <input
-                type="text"
-                name="endPoint"
-                placeholder="To"
-                value={searchParams.endPoint}
-                onChange={handleSearchInputChange}
-                className="search-input"
-              />
-            </div>
-            <div className="search-buttons">
-              <button 
-                className="search-apply" 
-                onClick={applySearch}
-                disabled={!searchParams.startPoint || !searchParams.endPoint}
+        <div className="header-content">
+          <div className="booking-header">
+            <h1 className="booking-title">Available Buses</h1>
+            <p className="booking-subtitle">
+              Select your preferred bus for booking
+            </p>
+            <div className="company-filter">
+              <select
+                value={selectedCompany}
+                onChange={handleCompanyChange}
+                className="company-select"
               >
-                Search
-              </button>
-              <button 
-                className="search-clear" 
-                onClick={resetSearch}
-                disabled={!searchParams.startPoint && !searchParams.endPoint}
-              >
-                Clear
-              </button>
+                <option value="">Sort by Company</option>
+                {companies.map((company, index) => (
+                  <option key={index} value={company}>
+                    {company}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
       </div>
-      
+
       {renderBusList()}
     </div>
   );
