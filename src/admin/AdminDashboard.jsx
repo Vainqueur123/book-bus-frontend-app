@@ -16,9 +16,7 @@ function AdminDashboard() {
     from: '',
     to: '',
     departure_time: '',
-    arrival_time: '',
-    price: '',
-    seats: '',
+    busDetails: '', // plate number
     company_id: '',
   });
 
@@ -63,9 +61,7 @@ function AdminDashboard() {
       from: '',
       to: '',
       departure_time: '',
-      arrival_time: '',
-      price: '',
-      seats: '',
+      busDetails: '',
       company_id: companyId || '',
     });
   };
@@ -76,9 +72,7 @@ function AdminDashboard() {
       from: bus.From,
       to: bus.Destination,
       departure_time: bus.departure_time,
-      arrival_time: bus.arrival_time,
-      price: bus.price,
-      seats: bus.seats,
+      busDetails: bus.busDetails || '',
       company_id: bus.company_id,
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -99,9 +93,7 @@ function AdminDashboard() {
       From: form.from,
       Destination: form.to,
       departure_time: form.departure_time,
-      arrival_time: form.arrival_time,
-      price: Number(form.price),
-      seats: Number(form.seats),
+      busDetails: form.busDetails,
       company_id: companyId,
       Company: companyName || null,
     };
@@ -182,26 +174,30 @@ function AdminDashboard() {
             </div>
           </div>
 
-          <div className="grid-3">
+          <div className="grid-2">
             <div className="form-group">
               <label>Departure Time</label>
-              <input type="datetime-local" name="departure_time" value={form.departure_time} onChange={handleChange} required />
+              <input
+                type="datetime-local"
+                name="departure_time"
+                value={form.departure_time}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="form-group">
-              <label>Arrival Time</label>
-              <input type="datetime-local" name="arrival_time" value={form.arrival_time} onChange={handleChange} required />
-            </div>
-            <div className="form-group">
-              <label>Price</label>
-              <input type="number" min="0" step="0.01" name="price" value={form.price} onChange={handleChange} required />
+              <label>Plate Number</label>
+              <input
+                type="text"
+                name="busDetails"
+                value={form.busDetails}
+                onChange={handleChange}
+                required
+              />
             </div>
           </div>
 
-          <div className="grid-2">
-            <div className="form-group">
-              <label>Seats</label>
-              <input type="number" min="1" step="1" name="seats" value={form.seats} onChange={handleChange} required />
-            </div>
+          <div className="grid-1">
             <div className="form-group">
               <label>Company</label>
               <input type="text" value={companyName || 'Unknown company'} disabled readOnly />
@@ -227,10 +223,8 @@ function AdminDashboard() {
                 <div key={bus.id} className="card">
                   <div className="card-row"><strong>{bus.From}</strong> → <strong>{bus.Destination}</strong></div>
                   <div className="card-row">Company: {bus.Company}</div>
-                  <div className="card-row">Departs: {new Date(bus.departure_time).toLocaleString()}</div>
-                  <div className="card-row">Arrives: {new Date(bus.arrival_time).toLocaleString()}</div>
-                  <div className="card-row">Price: {bus.price}</div>
-                  <div className="card-row">Seats: {bus.seats}</div>
+                  <div className="card-row">Plate Number: {bus.busDetails || 'N/A'}</div>
+                  <div className="card-row">Departs: {bus.departure_time ? new Date(bus.departure_time).toLocaleString() : 'N/A'}</div>
                   <div className="card-actions">
                     <button className="btn-small" onClick={() => onEdit(bus)}>Edit</button>
                   </div>

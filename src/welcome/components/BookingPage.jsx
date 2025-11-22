@@ -93,6 +93,14 @@ const BusDetailsForm = ({
           </div>
 
           <div className="detail-item">
+            <FaInfoCircle className="detail-icon" />
+            <div>
+              <div className="detail-label">Plate Number</div>
+              <div className="detail-value">{bus.busDetails || 'N/A'}</div>
+            </div>
+          </div>
+
+          <div className="detail-item">
             <FaPhoneAlt className="detail-icon" />
             <div>
               <div className="detail-label">Contact</div>
@@ -394,6 +402,7 @@ function BookingPage() {
         <div className="bus-list-header">
           <div className="header-company">Company</div>
           <div className="header-route">Route</div>
+          <div className="header-plate">Plate</div>
           <div className="header-actions">Actions</div>
         </div>
         <div className="buses-list">
@@ -407,6 +416,9 @@ function BookingPage() {
                 <span className="from">{bus.From || 'Departure'}</span>
                 <FaArrowRight className="route-arrow" />
                 <span className="to">{bus.Destination || 'Destination'}</span>
+              </div>
+              <div className="bus-plate">
+                <span>{bus.busDetails || 'N/A'}</span>
               </div>
               <div className="bus-actions">
                 <button
