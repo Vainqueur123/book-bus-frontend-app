@@ -38,6 +38,7 @@ function AdminDashboard() {
   }, [navigate]);
 
   const companyId = admin?.company_id;
+  const companyName = admin?.companyName || admin?.companies?.company_name || '';
 
   useEffect(() => {
     const fetchBuses = async () => {
@@ -72,8 +73,8 @@ function AdminDashboard() {
   const onEdit = (bus) => {
     setForm({
       id: bus.id,
-      from: bus.from,
-      to: bus.to,
+      from: bus.From,
+      to: bus.Destination,
       departure_time: bus.departure_time,
       arrival_time: bus.arrival_time,
       price: bus.price,
@@ -95,8 +96,8 @@ function AdminDashboard() {
     setError('');
 
     const payload = {
-      from: form.from,
-      to: form.to,
+      From: form.from,
+      Destination: form.to,
       departure_time: form.departure_time,
       arrival_time: form.arrival_time,
       price: Number(form.price),
@@ -148,7 +149,7 @@ function AdminDashboard() {
       <header className="admin-header">
         <h1>Admin Dashboard</h1>
         <div className="admin-meta">
-          <span>Company ID: {companyId}</span>
+          <span>Company: {companyName || companyId}</span>
           <button className="btn-accent" onClick={logout}>Logout</button>
         </div>
       </header>
@@ -202,7 +203,7 @@ function AdminDashboard() {
             </div>
             <div className="form-group">
               <label>Company</label>
-              <input type="text" value={companyId || ''} disabled readOnly />
+              <input type="text" value={companyName || companyId || ''} disabled readOnly />
             </div>
           </div>
 
@@ -223,7 +224,7 @@ function AdminDashboard() {
               {buses.length === 0 && <p>No buses yet.</p>}
               {buses.map((bus) => (
                 <div key={bus.id} className="card">
-                  <div className="card-row"><strong>{bus.from}</strong> → <strong>{bus.to}</strong></div>
+                  <div className="card-row"><strong>{bus.From}</strong> → <strong>{bus.Destination}</strong></div>
                   <div className="card-row">Departs: {new Date(bus.departure_time).toLocaleString()}</div>
                   <div className="card-row">Arrives: {new Date(bus.arrival_time).toLocaleString()}</div>
                   <div className="card-row">Price: {bus.price}</div>

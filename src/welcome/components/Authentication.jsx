@@ -61,20 +61,24 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack, onNotify }) 
           const pwd = form.password;
           let adminRes = await supabase
             .from('Admins')
-            .select('*')
+            .select('*, companies(company_name)')
             .ilike('admin_email', email)
             .eq('password', pwd)
             .single();
           if (adminRes.error || !adminRes.data) {
             adminRes = await supabase
               .from('admins')
-              .select('*')
+              .select('*, companies(company_name)')
               .ilike('admin_email', email)
               .eq('password', pwd)
               .single();
           }
           if (adminRes.data) {
-            localStorage.setItem('admin_session', JSON.stringify(adminRes.data));
+            const adminData = {
+              ...adminRes.data,
+              companyName: adminRes.data?.companies?.company_name || null,
+            };
+            localStorage.setItem('admin_session', JSON.stringify(adminData));
             window.dispatchEvent(new Event('admin_session_changed'));
             if (onNotify) onNotify('Admin access enabled.');
           } else {
@@ -96,20 +100,24 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack, onNotify }) 
             const pwd = form.password;
             let adminRes = await supabase
               .from('Admins')
-              .select('*')
+              .select('*, companies(company_name)')
               .ilike('admin_email', email)
               .eq('password', pwd)
               .single();
             if (adminRes.error || !adminRes.data) {
               adminRes = await supabase
                 .from('admins')
-                .select('*')
+                .select('*, companies(company_name)')
                 .ilike('admin_email', email)
                 .eq('password', pwd)
                 .single();
             }
             if (adminRes.data) {
-              localStorage.setItem('admin_session', JSON.stringify(adminRes.data));
+              const adminData = {
+                ...adminRes.data,
+                companyName: adminRes.data?.companies?.company_name || null,
+              };
+              localStorage.setItem('admin_session', JSON.stringify(adminData));
               window.dispatchEvent(new Event('admin_session_changed'));
             } else {
               localStorage.removeItem('admin_session');
@@ -123,12 +131,16 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack, onNotify }) 
             const pwd = form.password;
             let adminRes = await supabase
               .from('Admins')
-              .select('*')
+              .select('*, companies(company_name)')
               .ilike('admin_email', email)
               .eq('password', pwd)
               .single();
             if (!adminRes.error && adminRes.data) {
-              localStorage.setItem('admin_session', JSON.stringify(adminRes.data));
+              const adminData = {
+                ...adminRes.data,
+                companyName: adminRes.data?.companies?.company_name || null,
+              };
+              localStorage.setItem('admin_session', JSON.stringify(adminData));
               window.dispatchEvent(new Event('admin_session_changed'));
               // Close modal as "logged in" for admin path
               onAuthSuccess(null);
@@ -137,12 +149,16 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack, onNotify }) 
             // Also try lowercase table name if needed
             adminRes = await supabase
               .from('admins')
-              .select('*')
+              .select('*, companies(company_name)')
               .ilike('admin_email', email)
               .eq('password', pwd)
               .single();
             if (!adminRes.error && adminRes.data) {
-              localStorage.setItem('admin_session', JSON.stringify(adminRes.data));
+              const adminData = {
+                ...adminRes.data,
+                companyName: adminRes.data?.companies?.company_name || null,
+              };
+              localStorage.setItem('admin_session', JSON.stringify(adminData));
               window.dispatchEvent(new Event('admin_session_changed'));
               onAuthSuccess(null);
               return;
