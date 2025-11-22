@@ -103,6 +103,7 @@ function AdminDashboard() {
       price: Number(form.price),
       seats: Number(form.seats),
       company_id: companyId,
+      Company: companyName || null,
     };
 
     try {
@@ -149,7 +150,7 @@ function AdminDashboard() {
       <header className="admin-header">
         <h1>Admin Dashboard</h1>
         <div className="admin-meta">
-          <span>Company: {companyName || companyId}</span>
+          <span>Company: {companyName || 'Unknown company'}</span>
           <button className="btn-accent" onClick={logout}>Logout</button>
         </div>
       </header>
@@ -203,7 +204,7 @@ function AdminDashboard() {
             </div>
             <div className="form-group">
               <label>Company</label>
-              <input type="text" value={companyName || companyId || ''} disabled readOnly />
+              <input type="text" value={companyName || 'Unknown company'} disabled readOnly />
             </div>
           </div>
 
@@ -225,6 +226,7 @@ function AdminDashboard() {
               {buses.map((bus) => (
                 <div key={bus.id} className="card">
                   <div className="card-row"><strong>{bus.From}</strong> → <strong>{bus.Destination}</strong></div>
+                  <div className="card-row">Company: {bus.Company}</div>
                   <div className="card-row">Departs: {new Date(bus.departure_time).toLocaleString()}</div>
                   <div className="card-row">Arrives: {new Date(bus.arrival_time).toLocaleString()}</div>
                   <div className="card-row">Price: {bus.price}</div>
