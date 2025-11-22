@@ -37,6 +37,7 @@ function LandingPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    try { localStorage.removeItem('admin_session'); } catch {}
   };
 
   return (

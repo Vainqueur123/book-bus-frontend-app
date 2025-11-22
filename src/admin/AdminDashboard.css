@@ -1,0 +1,102 @@
+.admin-dashboard {
+  min-height: 100vh;
+  background: #0d1b33;
+  color: #e6f1ff;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #a8c1ff;
+}
+
+.btn-accent {
+  background: #00bfff;
+  color: #001229;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #a8c1ff;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-small {
+  background: transparent;
+  color: #00bfff;
+  border: 1px solid #00bfff44;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  padding: 24px;
+}
+
+.bus-form, .bus-list {
+  background: #0f2444;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+h1, h2 { margin: 0 0 12px; }
+
+.error-banner {
+  background: #3a0f1f;
+  color: #ffb3c1;
+  border: 1px solid #ff4d6d33;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { color: #a8c1ff; font-size: 0.9rem; }
+.form-group input, .form-group select {
+  background: #0c1a33;
+  color: #e6f1ff;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+.actions { display: flex; gap: 12px; margin-top: 12px; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.card {
+  background: #0c1a33;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 12px;
+}
+.card-row { margin: 4px 0; color: #c9dcff; }
+.card-actions { margin-top: 8px; display: flex; gap: 8px; }
+
+@media (max-width: 900px) {
+  .admin-content { grid-template-columns: 1fr; }
+}

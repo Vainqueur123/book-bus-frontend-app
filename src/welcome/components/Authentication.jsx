@@ -55,13 +55,103 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack, onNotify }) 
           onNotify('We sent a confirmation link to your email. Please verify to activate your account.');
         }
         onAuthSuccess(data.user);
+        // After signup, optionally detect admin (email+password must match Admins table)
+        try {
+          const email = (form.email || '').trim();
+          const pwd = form.password;
+          let adminRes = await supabase
+            .from('Admins')
+            .select('*')
+            .ilike('admin_email', email)
+            .eq('password', pwd)
+            .single();
+          if (adminRes.error || !adminRes.data) {
+            adminRes = await supabase
+              .from('admins')
+              .select('*')
+              .ilike('admin_email', email)
+              .eq('password', pwd)
+              .single();
+          }
+          if (adminRes.data) {
+            localStorage.setItem('admin_session', JSON.stringify(adminRes.data));
+            window.dispatchEvent(new Event('admin_session_changed'));
+            if (onNotify) onNotify('Admin access enabled.');
+          } else {
+            localStorage.removeItem('admin_session');
+            window.dispatchEvent(new Event('admin_session_changed'));
+          }
+        } catch (e) { if (onNotify) onNotify('Admin check failed. Please ensure access policies allow reading Admins.'); }
       } else {
+        // Try normal Supabase auth first
         const { data, error } = await supabase.auth.signInWithPassword({
           email: form.email,
           password: form.password,
         });
-        if (error) throw error;
-        onAuthSuccess(data.user);
+        if (!error) {
+          onAuthSuccess(data.user);
+          // Detect admin via Admins table (email + password)
+          try {
+            const email = (form.email || '').trim();
+            const pwd = form.password;
+            let adminRes = await supabase
+              .from('Admins')
+              .select('*')
+              .ilike('admin_email', email)
+              .eq('password', pwd)
+              .single();
+            if (adminRes.error || !adminRes.data) {
+              adminRes = await supabase
+                .from('admins')
+                .select('*')
+                .ilike('admin_email', email)
+                .eq('password', pwd)
+                .single();
+            }
+            if (adminRes.data) {
+              localStorage.setItem('admin_session', JSON.stringify(adminRes.data));
+              window.dispatchEvent(new Event('admin_session_changed'));
+            } else {
+              localStorage.removeItem('admin_session');
+              window.dispatchEvent(new Event('admin_session_changed'));
+            }
+          } catch (e) { if (onNotify) onNotify('Admin check failed. Please ensure access policies allow reading Admins.'); }
+        } else {
+          // Fallback: treat as Admin-only login using Admins table
+          try {
+            const email = (form.email || '').trim();
+            const pwd = form.password;
+            let adminRes = await supabase
+              .from('Admins')
+              .select('*')
+              .ilike('admin_email', email)
+              .eq('password', pwd)
+              .single();
+            if (!adminRes.error && adminRes.data) {
+              localStorage.setItem('admin_session', JSON.stringify(adminRes.data));
+              window.dispatchEvent(new Event('admin_session_changed'));
+              // Close modal as "logged in" for admin path
+              onAuthSuccess(null);
+              return;
+            }
+            // Also try lowercase table name if needed
+            adminRes = await supabase
+              .from('admins')
+              .select('*')
+              .ilike('admin_email', email)
+              .eq('password', pwd)
+              .single();
+            if (!adminRes.error && adminRes.data) {
+              localStorage.setItem('admin_session', JSON.stringify(adminRes.data));
+              window.dispatchEvent(new Event('admin_session_changed'));
+              onAuthSuccess(null);
+              return;
+            }
+            throw error;
+          } catch (adminErr) {
+            throw error; // preserve original auth error flow
+          }
+        }
       }
     } catch (ex) {
       // Helpful for diagnostics
@@ -108,6 +198,7 @@ function Authentication({ mode: initialMode, onAuthSuccess, onBack, onNotify }) 
         <h2 className="auth-title">
           {mode === 'signup' ? 'Create Account' : 'Log in to your account'}
         </h2>
+
         {mode === 'signup' && (
           <div className="form-group">
             <input
