@@ -1,0 +1,120 @@
+.admin-dashboard {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #111111;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.admin-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #333333;
+}
+
+.btn-accent {
+  background: #00bfff;
+  color: #001229;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #a8c1ff;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-small {
+  background: transparent;
+  color: #00bfff;
+  border: 1px solid #00bfff44;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bus-form, .bus-list {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Highlight the Add New Bus form as a primary card */
+.bus-form {
+  background: #e6f0ff;              /* stronger light blue */
+  border-color: #4a8dff;            /* more saturated border */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Soften the Your Buses list container */
+.bus-list {
+  background: #f3f4ff;              /* light lavender/blue for contrast */
+}
+
+h1, h2 { margin: 0 0 12px; }
+
+.error-banner {
+  background: #ffe5e5;
+  color: #b00020;
+  border: 1px solid rgba(176,0,32,0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { color: #333333; font-size: 0.9rem; }
+.form-group input, .form-group select {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+.actions { display: flex; gap: 12px; margin-top: 12px; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.card {
+  background: #ffffff;
+  border: 1px solid #4a8dff;        /* clearer blue border */
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+.card-row { margin: 4px 0; color: #333333; }
+.card-actions { margin-top: 8px; display: flex; gap: 8px; }
+
+@media (max-width: 900px) {
+  .admin-content { grid-template-columns: 1fr; }
+}
