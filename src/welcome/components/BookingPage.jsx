@@ -40,13 +40,15 @@ const BusDetailsForm = ({
     return parseFloat(price || 0).toFixed(2);
   };
 
+
+  // bus detail model
   return (
     <div className="bus-details-form">
       <div className="bus-details-header">
         <button className="back-button" onClick={onBack}>
           <FaArrowLeft className="mr-2" /> Back to Buses
         </button>
-        <div className="bus-detail title">Bus Details</div>
+        <div className="bus-detail-title">Bus Details</div>
       </div>
       <div className="bus-logo-time">
         <div className="bus-company">
@@ -147,17 +149,14 @@ function BookingPage() {
   const [error, setError] = useState(null);
   const [selectedBus, setSelectedBus] = useState(null);
   const [showMap, setShowMap] = useState(false);
-<<<<<<< HEAD
   const [showSearchFields, setShowSearchFields] = useState(false);
   const [searchParams, setSearchParams] = useState({
     startPoint: '',
     endPoint: ''
   });
   const location = useLocation();
-=======
   const [selectedCompany, setSelectedCompany] = useState('');
   const [companies, setCompanies] = useState([]);
->>>>>>> ft/mapping-on-data
 
   // Format price to 2 decimal places
   const formatPrice = (price) => {
@@ -167,6 +166,7 @@ function BookingPage() {
   // Handle view details
   const handleViewDetails = (bus) => {
     setSelectedBus(bus);
+    setShowMap(false);
   };
 
   // Handle back from details
@@ -181,8 +181,8 @@ function BookingPage() {
 
   // Handle continue to seat selection
   const handleContinueToSeatSelection = () => {
-    // This will be implemented in the next step
-    console.log('Continuing to seat selection for bus:', selectedBus);
+    // Navigate to seat selection with the selected bus
+    window.location.href = `/booking/seats?busId=${selectedBus?.id}`;
   };
 
   // Handle back from map
@@ -247,31 +247,6 @@ function BookingPage() {
     fetchBuses();
   }, []);
 
-<<<<<<< HEAD
-  // Read URL query params (?from=...&to=...) and prefill + filter when buses are ready
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const from = params.get('from') || '';
-    const to = params.get('to') || '';
-    if (!from && !to) return;
-    // Prefill fields
-    setSearchParams({
-      startPoint: from,
-      endPoint: to,
-    });
-    // Apply filter if we have buses
-    if (buses.length > 0) {
-      const filtered = buses.filter((bus) => {
-        const start = from.toLowerCase();
-        const end = to.toLowerCase();
-        const matchesStart = !start || (bus.From && bus.From.toLowerCase().includes(start));
-        const matchesEnd = !end || (bus.Destination && bus.Destination.toLowerCase().includes(end));
-        return matchesStart && matchesEnd;
-      });
-      setFilteredBuses(filtered);
-    }
-  }, [location.search, buses]);
-=======
   // Filter buses by selected company
   useEffect(() => {
     if (!selectedCompany) {
@@ -286,7 +261,6 @@ function BookingPage() {
   const handleCompanyChange = (e) => {
     setSelectedCompany(e.target.value || '');
   };
->>>>>>> ft/mapping-on-data
 
   if (isLoading) {
     return (
@@ -434,8 +408,8 @@ function BookingPage() {
                 >
                   View Details
                 </button>
-                <Link
-                  to="/booking/seats"
+                <Link to= "/seats">
+                <button
                   className="book-now-btn"
                   onClick={() => {
                     setSelectedBus(bus);
@@ -443,6 +417,7 @@ function BookingPage() {
                   }}
                 >
                   Book Now
+                </button>
                 </Link>
               </div>
             </div>
