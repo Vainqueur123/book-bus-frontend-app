@@ -41,102 +41,133 @@ const BusDetailsForm = ({
   };
 
 
-  // bus detail model
   return (
-    <div className="bus-details-form">
-      <div className="bus-details-header">
-        <button className="back-button" onClick={onBack}>
-          <FaArrowLeft className="mr-2" /> Back to Buses
-        </button>
-        <div className="bus-detail-title">Bus Details</div>
-      </div>
-      <div className="bus-logo-time">
-        <div className="bus-company">
-          <FaBus className="icon" />
-          <div>{bus.Company || 'Unknown Company'}</div>
+    <div className="modal-overlay active">
+      <div className="details-popup">
+        <div className="popup-header">
+          <h2 className="popup-title">Bus Details</h2>
+          <button className="close-btn" onClick={onBack}>
+            &times;
+          </button>
         </div>
-        <div className="form-section">
-          <div className="start-time">
-            <div className="take-off-point">Take off point:</div>
-            <div>{bus.From || 'Departure'}</div>
-            <div className="bus-name">
-              {' '}
-              {formatTime(bus.departure_time || bus.created_at)}
-            </div>
-            <FaMapMarkerAlt className="location-icon" />
-          </div>
-          <div className="end-time">
-            <div className="end-point">Destination point:</div>
-            <span>{bus.Destination || 'Destination'}</span>
-            <div className="duration">{bus.duration || '--h --m'}</div>
-            <div className="route-time">{formatTime(bus.arrival_time)}</div>
-            <FaMapMarkerAlt className="location-icon" />
-          </div>
-        </div>
-      </div>
-
-      <div className="form-section2">
-        <h3>Bus Information</h3>
-        <div className="bus-details-grid">
-          <div className="detail-item">
-            <FaChair className="detail-icon" />
-            <div>
-              <div className="detail-label">Available Seats</div>
-              <div className="detail-value">{bus.available_seats || 0}</div>
-            </div>
-          </div>
-
-          <div className="detail-item">
-            <FaUserTie className="detail-icon" />
-            <div>
-              <div className="detail-label">Driver</div>
-              <div className="detail-value">{bus.driver || 'Not Assigned'}</div>
-            </div>
-          </div>
-
-          <div className="detail-item">
-            <FaInfoCircle className="detail-icon" />
-            <div>
-              <div className="detail-label">Plate Number</div>
-              <div className="detail-value">{bus.busDetails || 'N/A'}</div>
-            </div>
-          </div>
-
-          <div className="detail-item">
-            <FaPhoneAlt className="detail-icon" />
-            <div>
-              <div className="detail-label">Contact</div>
-              <div className="detail-value">{bus.contact_number || 'N/A'}</div>
-            </div>
-          </div>
-
-          <div className="detail-item">
-            <FaInfoCircle className="detail-icon" />
-            <div>
-              <div className="detail-label">Status</div>
-              <div
-                className={`status-badge ${bus.status?.toLowerCase() || 'scheduled'}`}
-              >
-                {bus.status || 'Scheduled'}
+        
+        <div className="popup-content">
+          <div className="popup-section">
+            <div className="detail-grid">
+              <div className="detail-item">
+                <FaBus className="detail-icon" />
+                <div>
+                  <div className="detail-label">Company</div>
+                  <div className="detail-value">{bus.Company || 'Unknown Company'}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaMapMarkerAlt className="detail-icon" />
+                <div>
+                  <div className="detail-label">From</div>
+                  <div className="detail-value">{bus.From || 'Departure'}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaMapMarkerAlt className="detail-icon" />
+                <div>
+                  <div className="detail-label">To</div>
+                  <div className="detail-value">{bus.Destination || 'Destination'}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaClock className="detail-icon" />
+                <div>
+                  <div className="detail-label">Departure</div>
+                  <div className="detail-value">{formatTime(bus.departure_time || bus.created_at)}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaClock className="detail-icon" />
+                <div>
+                  <div className="detail-label">Arrival</div>
+                  <div className="detail-value">{formatTime(bus.arrival_time) || '--:--'}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaInfoCircle className="detail-icon" />
+                <div>
+                  <div className="detail-label">Duration</div>
+                  <div className="detail-value">{bus.duration || '--h --m'}</div>
+                </div>
               </div>
             </div>
           </div>
+          
+          <div className="popup-section">
+            <h3>Bus Information</h3>
+            <div className="detail-grid">
+              <div className="detail-item">
+                <FaChair className="detail-icon" />
+                <div>
+                  <div className="detail-label">Available Seats</div>
+                  <div className="detail-value">{bus.available_seats || 0}</div>
+                </div>
+              </div>
 
-          <div className="detail-item price-item">
-            <div>
-              <div className="detail-label">Price per Seat</div>
-              <div className="detail-value price">
-                ${formatPrice(bus.ticket_price)}
+              <div className="detail-item">
+                <FaUserTie className="detail-icon" />
+                <div>
+                  <div className="detail-label">Driver</div>
+                  <div className="detail-value">{bus.driver || 'Not Assigned'}</div>
+                </div>
+              </div>
+
+              <div className="detail-item">
+                <FaInfoCircle className="detail-icon" />
+                <div>
+                  <div className="detail-label">Plate Number</div>
+                  <div className="detail-value">{bus.busDetails || 'N/A'}</div>
+                </div>
+              </div>
+
+              <div className="detail-item">
+                <FaPhoneAlt className="detail-icon" />
+                <div>
+                  <div className="detail-label">Contact</div>
+                  <div className="detail-value">{bus.contact_number || 'N/A'}</div>
+                </div>
+              </div>
+
+              <div className="detail-item">
+                <FaInfoCircle className="detail-icon" />
+                <div>
+                  <div className="detail-label">Status</div>
+                  <div className={`detail-value ${bus.status?.toLowerCase() || 'scheduled'}`}>
+                    {bus.status || 'Scheduled'}
+                  </div>
+                </div>
+              </div>
+
+              <div className="detail-item">
+                <FaTicketAlt className="detail-icon" />
+                <div>
+                  <div className="detail-label">Price per Seat</div>
+                  <div className="detail-value">${formatPrice(bus.ticket_price)}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="form-actions">
-        <button className="btn btn-primary" onClick={onBookNow}>
-          <FaTicketAlt className="mr-2" /> Book Now
-        </button>
+        
+        <div className="popup-actions">
+          <button className="btn btn-secondary" onClick={onBack}>
+            Close
+          </button>
+          <button className="btn btn-primary" onClick={onBookNow}>
+            <FaTicketAlt className="mr-2" /> Book Now
+          </button>
+        </div>
       </div>
     </div>
   );
