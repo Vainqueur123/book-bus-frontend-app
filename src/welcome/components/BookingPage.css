@@ -71,10 +71,10 @@ body {
 .show-all-btn {
   margin-top: 0.4rem;
   padding: 0.6rem 1.2rem;
-  background-color: #0e7ff0;
+  background-color: white;
   border: 1px solid #d1d5db;
   border-radius: 6px;
-  color: white;
+  color: black;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -82,7 +82,7 @@ body {
 }
 
 .show-all-btn:hover {
-  background-color: #68789a;
+  background-color: #b6bac1;
   border-color: #9ca3af;
 }
 
