@@ -54,11 +54,39 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.filter-controls {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0.5rem 0;
+}
+
 .company-filter {
   position: relative;
-  width: 100%;
+  flex: 1;
   max-width: 300px;
-  margin: 0.5rem 0;
+}
+
+.show-all-btn {
+  padding: 0.6rem 1.2rem;
+  background-color: #f0f4f8;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #374151;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.show-all-btn:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.show-all-btn:active {
+  transform: translateY(1px);
 }
 
 .company-select {

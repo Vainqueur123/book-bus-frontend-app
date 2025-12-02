@@ -304,6 +304,31 @@ function BookingPage() {
     setSelectedCompany(e.target.value || '');
   };
 
+  // Handle show all buses
+  const handleShowAllBuses = async () => {
+    try {
+      setIsLoading(true);
+      setSelectedCompany(''); // Reset company filter
+      
+      // Fetch all buses
+      const busesData = await getActiveBuses();
+      setBuses(busesData);
+      setFilteredBuses(busesData);
+      
+      // Update companies list
+      const uniqueCompanies = [
+        ...new Set(busesData.map((bus) => bus.Company).filter(Boolean)),
+      ].sort();
+      setCompanies(uniqueCompanies);
+      
+    } catch (err) {
+      console.error('Error fetching all buses:', err);
+      setError('Failed to load all buses. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="booking-page">
@@ -479,19 +504,28 @@ function BookingPage() {
             <p className="booking-subtitle">
               Select your preferred bus for booking
             </p>
-            <div className="company-filter">
-              <select
-                value={selectedCompany}
-                onChange={handleCompanyChange}
-                className="company-select"
+            <div className="filter-controls">
+              <div className="company-filter">
+                <select
+                  value={selectedCompany}
+                  onChange={handleCompanyChange}
+                  className="company-select"
+                >
+                  <option value="">Sort by Company</option>
+                  {companies.map((company, index) => (
+                    <option key={index} value={company}>
+                      {company}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button 
+                className="show-all-btn"
+                onClick={handleShowAllBuses}
+                disabled={isLoading}
               >
-                <option value="">Sort by Company</option>
-                {companies.map((company, index) => (
-                  <option key={index} value={company}>
-                    {company}
-                  </option>
-                ))}
-              </select>
+                {isLoading ? 'Loading...' : 'Show All Buses'}
+              </button>
             </div>
           </div>
         </div>
