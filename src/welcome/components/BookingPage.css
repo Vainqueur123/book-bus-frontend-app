@@ -56,7 +56,7 @@ body {
 
 .filter-controls {
   display: flex;
-  gap: 1rem;
+  gap: 4rem;
   width: 100%;
   max-width: 600px;
   margin: 0.5rem 0;
@@ -65,15 +65,16 @@ body {
 .company-filter {
   position: relative;
   flex: 1;
-  max-width: 300px;
+  max-width: 15rem;
 }
 
 .show-all-btn {
+  margin-top: 0.4rem;
   padding: 0.6rem 1.2rem;
-  background-color: #f0f4f8;
+  background-color: #0e7ff0;
   border: 1px solid #d1d5db;
   border-radius: 6px;
-  color: #374151;
+  color: white;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -81,7 +82,7 @@ body {
 }
 
 .show-all-btn:hover {
-  background-color: #e5e7eb;
+  background-color: #68789a;
   border-color: #9ca3af;
 }
 
@@ -144,9 +145,9 @@ body {
 
 .bus-list-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   background-color: #f8f9fa;
-  padding: 1rem 1.5rem;
+  padding: 0.3rem;
   font-weight: 600;
   color: var(--text);
   border-bottom: 1px solid var(--border);
@@ -174,8 +175,7 @@ body {
   border-bottom: 1px solid var(--border);
   transition: var(--transition);
   align-items: center;
-  min-height: 100px;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .bus-list-item:last-child {
@@ -323,15 +323,16 @@ body {
 /* Detail Grid */
 .detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1.5rem;
 }
 
 .detail-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: flex-start;
   gap: 1rem;
-  padding: 1.25rem;
+  padding: 0.2rem;
   background: #f8fafc;
   border-radius: 12px;
   transition: all 0.2s ease;
@@ -346,12 +347,12 @@ body {
 
 .detail-icon {
   color: var(--primary);
-  font-size: 1.5rem;
-  min-width: 24px;
+  font-size: 1rem;
+  min-width: 1rem;
   margin-top: 0.25rem;
   background: rgba(59, 130, 246, 0.1);
-  width: 48px;
-  height: 48px;
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
