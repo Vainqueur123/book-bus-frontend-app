@@ -181,10 +181,6 @@ function BookingPage() {
   const [selectedBus, setSelectedBus] = useState(null);
   const [showMap, setShowMap] = useState(false);
   const [showSearchFields, setShowSearchFields] = useState(false);
-  const [searchParams, setSearchParams] = useState({
-    startPoint: '',
-    endPoint: ''
-  });
   const location = useLocation();
   const [selectedCompany, setSelectedCompany] = useState('');
   const [companies, setCompanies] = useState([]);
@@ -243,6 +239,11 @@ function BookingPage() {
     });
   };
 
+  // Get search params from URL
+  const searchParams = new URLSearchParams(location.search);
+  const fromParam = searchParams.get('from')?.toLowerCase();
+  const toParam = searchParams.get('to')?.toLowerCase();
+
   // Fetch active buses when component mounts
   useEffect(() => {
     const fetchBuses = async () => {
@@ -259,14 +260,24 @@ function BookingPage() {
           return;
         }
 
+        // Filter buses based on search params if they exist
+        let filteredData = busesData;
+        if (fromParam || toParam) {
+          filteredData = busesData.filter(bus => {
+            const matchesFrom = !fromParam || bus.From?.toLowerCase().includes(fromParam);
+            const matchesTo = !toParam || bus.Destination?.toLowerCase().includes(toParam);
+            return matchesFrom && matchesTo;
+          });
+        }
+
         // Extract unique companies
         const uniqueCompanies = [
-          ...new Set(busesData.map((bus) => bus.Company).filter(Boolean)),
+          ...new Set(filteredData.map((bus) => bus.Company).filter(Boolean)),
         ].sort();
         setCompanies(uniqueCompanies);
 
-        setBuses(busesData);
-        setFilteredBuses(busesData);
+        setBuses(filteredData);
+        setFilteredBuses(filteredData);
       } catch (err) {
         console.error('Error fetching buses:', err);
         setError('Failed to load buses. Please try again later.');
@@ -276,7 +287,7 @@ function BookingPage() {
     };
 
     fetchBuses();
-  }, []);
+  }, [fromParam, toParam, location.search]);
 
   // Filter buses by selected company
   useEffect(() => {
