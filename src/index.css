@@ -6,7 +6,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #0d0d0d, #001f4d);
+  background: linear-gradient(135deg, hsl(0, 100%, 100%), hsl(216, 70%, 39%));
   color: #e0e0e0;
   line-height: 1.5;
 }
@@ -26,10 +26,44 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   width: 100%;
   max-width: 400px;
+  position: relative; /* anchor internal close button */
 }
 
 .form-group {
   margin-bottom: 15px;
+}
+
+/* Modal auth title inside the card */
+.auth-title {
+  margin: 0 0 12px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+}
+
+/* Stylish close button inside the auth card */
+.auth-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+.auth-close:hover {
+  color: #93c5fd;
+  transform: translateY(-1px);
+}
+.auth-close:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
 }
 
 .auth-input {
@@ -89,6 +123,26 @@ body {
   font-size: 14px;
   text-align: center;
 }
+
+/* Auth mode switch row under buttons */
+.auth-switch {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+.auth-link {
+  background: transparent;
+  border: none;
+  color: #93c5fd;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.auth-link:hover { color: #bfdbfe; }
 
 .booking-page {
   max-width: 1200px;

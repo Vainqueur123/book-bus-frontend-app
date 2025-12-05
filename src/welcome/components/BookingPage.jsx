@@ -15,7 +15,7 @@ import {
 } from 'react-icons/fa';
 import LiveMap from './LiveMap';
 import './BookingPage.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // Bus Details Form Component
 const BusDetailsForm = ({
@@ -40,93 +40,134 @@ const BusDetailsForm = ({
     return parseFloat(price || 0).toFixed(2);
   };
 
+
   return (
-    <div className="bus-details-form">
-      <div className="bus-details-header">
-        <button className="back-button" onClick={onBack}>
-          <FaArrowLeft className="mr-2" /> Back to Buses
-        </button>
-        <div className="bus-detail title">Bus Details</div>
-      </div>
-      <div className="bus-logo-time">
-        <div className="bus-company">
-          <FaBus className="icon" />
-          <div>{bus.Company || 'Unknown Company'}</div>
+    <div className="modal-overlay active">
+      <div className="details-popup">
+        <div className="popup-header">
+          <h2 className="popup-title">Bus Details</h2>
+          <button className="close-btn" onClick={onBack}>
+            &times;
+          </button>
         </div>
-        <div className="form-section">
-          <div className="start-time">
-            <div className="take-off-point">Take off point:</div>
-            <div>{bus.From || 'Departure'}</div>
-            <div className="bus-name">
-              {' '}
-              {formatTime(bus.departure_time || bus.created_at)}
-            </div>
-            <FaMapMarkerAlt className="location-icon" />
-          </div>
-          <div className="end-time">
-            <div className="end-point">Destination point:</div>
-            <span>{bus.Destination || 'Destination'}</span>
-            <div className="duration">{bus.duration || '--h --m'}</div>
-            <div className="route-time">{formatTime(bus.arrival_time)}</div>
-            <FaMapMarkerAlt className="location-icon" />
-          </div>
-        </div>
-      </div>
-
-      <div className="form-section2">
-        <h3>Bus Information</h3>
-        <div className="bus-details-grid">
-          <div className="detail-item">
-            <FaChair className="detail-icon" />
-            <div>
-              <div className="detail-label">Available Seats</div>
-              <div className="detail-value">{bus.available_seats || 0}</div>
-            </div>
-          </div>
-
-          <div className="detail-item">
-            <FaUserTie className="detail-icon" />
-            <div>
-              <div className="detail-label">Driver</div>
-              <div className="detail-value">{bus.driver || 'Not Assigned'}</div>
-            </div>
-          </div>
-
-          <div className="detail-item">
-            <FaPhoneAlt className="detail-icon" />
-            <div>
-              <div className="detail-label">Contact</div>
-              <div className="detail-value">{bus.contact_number || 'N/A'}</div>
-            </div>
-          </div>
-
-          <div className="detail-item">
-            <FaInfoCircle className="detail-icon" />
-            <div>
-              <div className="detail-label">Status</div>
-              <div
-                className={`status-badge ${bus.status?.toLowerCase() || 'scheduled'}`}
-              >
-                {bus.status || 'Scheduled'}
+        
+        <div className="popup-content">
+          <div className="popup-section">
+            <div className="detail-grid">
+              <div className="detail-item">
+                <FaBus className="detail-icon" />
+                <div>
+                  <div className="detail-label">Company</div>
+                  <div className="detail-value">{bus.Company || 'Unknown Company'}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaMapMarkerAlt className="detail-icon" />
+                <div>
+                  <div className="detail-label">From</div>
+                  <div className="detail-value">{bus.From || 'Departure'}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaMapMarkerAlt className="detail-icon" />
+                <div>
+                  <div className="detail-label">To</div>
+                  <div className="detail-value">{bus.Destination || 'Destination'}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaClock className="detail-icon" />
+                <div>
+                  <div className="detail-label">Departure</div>
+                  <div className="detail-value">{formatTime(bus.departure_time || bus.created_at)}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaClock className="detail-icon" />
+                <div>
+                  <div className="detail-label">Arrival</div>
+                  <div className="detail-value">{formatTime(bus.arrival_time) || '--:--'}</div>
+                </div>
+              </div>
+              
+              <div className="detail-item">
+                <FaInfoCircle className="detail-icon" />
+                <div>
+                  <div className="detail-label">Duration</div>
+                  <div className="detail-value">{bus.duration || '--h --m'}</div>
+                </div>
               </div>
             </div>
           </div>
+          
+          <div className="popup-section">
+            <h3>Bus Information</h3>
+            <div className="detail-grid">
+              <div className="detail-item">
+                <FaChair className="detail-icon" />
+                <div>
+                  <div className="detail-label">Available Seats</div>
+                  <div className="detail-value">{bus.available_seats || 0}</div>
+                </div>
+              </div>
 
-          <div className="detail-item price-item">
-            <div>
-              <div className="detail-label">Price per Seat</div>
-              <div className="detail-value price">
-                ${formatPrice(bus.ticket_price)}
+              <div className="detail-item">
+                <FaUserTie className="detail-icon" />
+                <div>
+                  <div className="detail-label">Driver</div>
+                  <div className="detail-value">{bus.driver || 'Not Assigned'}</div>
+                </div>
+              </div>
+
+              <div className="detail-item">
+                <FaInfoCircle className="detail-icon" />
+                <div>
+                  <div className="detail-label">Plate Number</div>
+                  <div className="detail-value">{bus.busDetails || 'N/A'}</div>
+                </div>
+              </div>
+
+              <div className="detail-item">
+                <FaPhoneAlt className="detail-icon" />
+                <div>
+                  <div className="detail-label">Contact</div>
+                  <div className="detail-value">{bus.contact_number || 'N/A'}</div>
+                </div>
+              </div>
+
+              <div className="detail-item">
+                <FaInfoCircle className="detail-icon" />
+                <div>
+                  <div className="detail-label">Status</div>
+                  <div className={`detail-value ${bus.status?.toLowerCase() || 'scheduled'}`}>
+                    {bus.status || 'Scheduled'}
+                  </div>
+                </div>
+              </div>
+
+              <div className="detail-item">
+                <FaTicketAlt className="detail-icon" />
+                <div>
+                  <div className="detail-label">Price per Seat</div>
+                  <div className="detail-value">${formatPrice(bus.ticket_price)}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="form-actions">
-        <button className="btn btn-primary" onClick={onBookNow}>
-          <FaTicketAlt className="mr-2" /> Book Now
-        </button>
+        
+        <div className="popup-actions">
+          <button className="btn btn-secondary" onClick={onBack}>
+            Close
+          </button>
+          <button className="btn btn-primary" onClick={onBookNow}>
+            <FaTicketAlt className="mr-2" /> Book Now
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -139,6 +180,8 @@ function BookingPage() {
   const [error, setError] = useState(null);
   const [selectedBus, setSelectedBus] = useState(null);
   const [showMap, setShowMap] = useState(false);
+  const [showSearchFields, setShowSearchFields] = useState(false);
+  const location = useLocation();
   const [selectedCompany, setSelectedCompany] = useState('');
   const [companies, setCompanies] = useState([]);
 
@@ -150,6 +193,7 @@ function BookingPage() {
   // Handle view details
   const handleViewDetails = (bus) => {
     setSelectedBus(bus);
+    setShowMap(false);
   };
 
   // Handle back from details
@@ -164,8 +208,8 @@ function BookingPage() {
 
   // Handle continue to seat selection
   const handleContinueToSeatSelection = () => {
-    // This will be implemented in the next step
-    console.log('Continuing to seat selection for bus:', selectedBus);
+    // Navigate to seat selection with the selected bus
+    window.location.href = `/booking/seats?busId=${selectedBus?.id}`;
   };
 
   // Handle back from map
@@ -195,6 +239,11 @@ function BookingPage() {
     });
   };
 
+  // Get search params from URL
+  const searchParams = new URLSearchParams(location.search);
+  const fromParam = searchParams.get('from')?.toLowerCase();
+  const toParam = searchParams.get('to')?.toLowerCase();
+
   // Fetch active buses when component mounts
   useEffect(() => {
     const fetchBuses = async () => {
@@ -211,14 +260,24 @@ function BookingPage() {
           return;
         }
 
+        // Filter buses based on search params if they exist
+        let filteredData = busesData;
+        if (fromParam || toParam) {
+          filteredData = busesData.filter(bus => {
+            const matchesFrom = !fromParam || bus.From?.toLowerCase().includes(fromParam);
+            const matchesTo = !toParam || bus.Destination?.toLowerCase().includes(toParam);
+            return matchesFrom && matchesTo;
+          });
+        }
+
         // Extract unique companies
         const uniqueCompanies = [
-          ...new Set(busesData.map((bus) => bus.Company).filter(Boolean)),
+          ...new Set(filteredData.map((bus) => bus.Company).filter(Boolean)),
         ].sort();
         setCompanies(uniqueCompanies);
 
-        setBuses(busesData);
-        setFilteredBuses(busesData);
+        setBuses(filteredData);
+        setFilteredBuses(filteredData);
       } catch (err) {
         console.error('Error fetching buses:', err);
         setError('Failed to load buses. Please try again later.');
@@ -228,7 +287,7 @@ function BookingPage() {
     };
 
     fetchBuses();
-  }, []);
+  }, [fromParam, toParam, location.search]);
 
   // Filter buses by selected company
   useEffect(() => {
@@ -354,6 +413,7 @@ function BookingPage() {
         <div className="bus-list-header">
           <div className="header-company">Company</div>
           <div className="header-route">Route</div>
+          <div className="header-plate">Plate</div>
           <div className="header-actions">Actions</div>
         </div>
         <div className="buses-list">
@@ -370,11 +430,18 @@ function BookingPage() {
                   <span className="to">{bus.Destination || 'Destination'}</span>
                   {bus.created_at && (
                     <span className="created-time">
-                      Departure time:{' '}
-                      {new Date(bus.created_at).toLocaleString()}
+                      <FaClock className="time-icon" />
+                      {new Date(bus.created_at).toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                      })}
                     </span>
                   )}
                 </div>
+              </div>
+              <div className="bus-plate">
+                <span>{bus.busDetails || 'N/A'}</span>
               </div>
               <div className="bus-actions">
                 <button
@@ -383,8 +450,8 @@ function BookingPage() {
                 >
                   View Details
                 </button>
-                <Link
-                  to="/booking/seats"
+                <Link to= "/seats">
+                <button
                   className="book-now-btn"
                   onClick={() => {
                     setSelectedBus(bus);
@@ -392,6 +459,7 @@ function BookingPage() {
                   }}
                 >
                   Book Now
+                </button>
                 </Link>
               </div>
             </div>
