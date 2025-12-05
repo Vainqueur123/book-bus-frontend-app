@@ -7,8 +7,10 @@ import LandingPage from './landing/LandingPage';
 import Layout from './layout/Layout';
 import AdminDashboard from './admin/AdminDashboard';
 
+
 function App() {
   return (
+    
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<LandingPage />} />
