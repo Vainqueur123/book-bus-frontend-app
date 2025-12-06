@@ -147,17 +147,8 @@ function BookingPage() {
   const [error, setError] = useState(null);
   const [selectedBus, setSelectedBus] = useState(null);
   const [showMap, setShowMap] = useState(false);
-<<<<<<< HEAD
-  const [showSearchFields, setShowSearchFields] = useState(false);
-  const [searchParams, setSearchParams] = useState({
-    startPoint: '',
-    endPoint: ''
-  });
-  const location = useLocation();
-=======
   const [selectedCompany, setSelectedCompany] = useState('');
   const [companies, setCompanies] = useState([]);
->>>>>>> ft/mapping-on-data
 
   // Format price to 2 decimal places
   const formatPrice = (price) => {
@@ -247,31 +238,6 @@ function BookingPage() {
     fetchBuses();
   }, []);
 
-<<<<<<< HEAD
-  // Read URL query params (?from=...&to=...) and prefill + filter when buses are ready
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const from = params.get('from') || '';
-    const to = params.get('to') || '';
-    if (!from && !to) return;
-    // Prefill fields
-    setSearchParams({
-      startPoint: from,
-      endPoint: to,
-    });
-    // Apply filter if we have buses
-    if (buses.length > 0) {
-      const filtered = buses.filter((bus) => {
-        const start = from.toLowerCase();
-        const end = to.toLowerCase();
-        const matchesStart = !start || (bus.From && bus.From.toLowerCase().includes(start));
-        const matchesEnd = !end || (bus.Destination && bus.Destination.toLowerCase().includes(end));
-        return matchesStart && matchesEnd;
-      });
-      setFilteredBuses(filtered);
-    }
-  }, [location.search, buses]);
-=======
   // Filter buses by selected company
   useEffect(() => {
     if (!selectedCompany) {
@@ -286,7 +252,6 @@ function BookingPage() {
   const handleCompanyChange = (e) => {
     setSelectedCompany(e.target.value || '');
   };
->>>>>>> ft/mapping-on-data
 
   if (isLoading) {
     return (
